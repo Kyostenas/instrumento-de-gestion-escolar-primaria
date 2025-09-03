@@ -92,7 +92,7 @@ interface MOVEMENT_TO_GET {
 // (o-----------------------------------------------------------\/-----o)
 
 export interface HistoryLogFilters {
-    document_id: string
+    document_id: string;
 }
 
 // (o-----------------------------------------------------------/\-----o)

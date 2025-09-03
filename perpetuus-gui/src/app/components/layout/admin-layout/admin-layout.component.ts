@@ -41,7 +41,7 @@ export class AdminLayoutComponent implements OnInit {
         private router: Router,
         private viewport_service: DeteccionViewportService,
         private url_query_service: ControlQueriesUrlService,
-        public sidebar_service: SidebarControlService,
+        public sidebar_service: SidebarControlService
     ) {
         this.valid_session = toSignal(this.auth_service.validar_sesion());
     }

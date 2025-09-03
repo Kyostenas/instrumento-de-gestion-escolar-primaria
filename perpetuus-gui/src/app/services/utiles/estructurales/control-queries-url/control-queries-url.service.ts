@@ -10,7 +10,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
     providedIn: 'root'
 })
 export class ControlQueriesUrlService {
-    constructor(private router: Router, private route: ActivatedRoute) {
+    constructor(
+        private router: Router,
+        private route: ActivatedRoute
+    ) {
         this.query_string = toSignal(this.route.queryParams, {
             initialValue: {}
         }) as Signal<QUERY_PARAMS_GENERAL | undefined>;

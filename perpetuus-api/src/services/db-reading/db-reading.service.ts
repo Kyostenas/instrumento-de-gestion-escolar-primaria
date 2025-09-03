@@ -9,7 +9,9 @@ export default class DBReadingService<MODEL_TYPE, SCHEMA_TYPE> {
     private pagination: Pagination;
     private model: ModelType<MODEL_TYPE>;
     private term?: string;
-    private filters_function?: (current_query: {[type: string]: any}) => {[type: string]: any};
+    private filters_function?: (current_query: { [type: string]: any }) => {
+        [type: string]: any;
+    };
     private projection?: { [type: string]: 1 | 0 | string };
     private paths_to_populate?: PathsToPopulate[];
 
@@ -24,7 +26,9 @@ export default class DBReadingService<MODEL_TYPE, SCHEMA_TYPE> {
         pagination: Pagination;
         model: ModelType<MODEL_TYPE>;
         term?: string;
-        filters_function?: (current_query: {[type: string]: any}) => {[type: string]: any};
+        filters_function?: (current_query: { [type: string]: any }) => {
+            [type: string]: any;
+        };
         projection?: { [type: string]: 1 | 0 | string };
         paths_to_populate?: PathsToPopulate[];
     }) {
@@ -52,7 +56,7 @@ export default class DBReadingService<MODEL_TYPE, SCHEMA_TYPE> {
             query.text_search_value = { $regex: regex_term, $options: 'i' };
         }
         if (this.filters_function) {
-            query = this.filters_function(query)
+            query = this.filters_function(query);
         }
         return query;
     }

@@ -23,7 +23,7 @@ export class HistoryLogService extends CRUD_Service<
     };
     read = async ({
         pagination,
-        filters,
+        filters
     }: {
         pagination: Pagination;
         filters: {
@@ -39,18 +39,18 @@ export class HistoryLogService extends CRUD_Service<
             model: this.getmodel(),
             projection: {
                 __v: 0,
-                text_search_value: 0,
+                text_search_value: 0
             },
             paths_to_populate: [
                 {
                     path: 'user',
-                    select: '-contrasena -text_search_value -__V -numero_celular',
-                },
+                    select: '-contrasena -text_search_value -__V -numero_celular'
+                }
             ],
             filters_function: (current_query) => {
                 current_query.modified_document_id = filters.document_id;
                 return current_query;
-            },
+            }
         });
         const RESULT = await DB_READING_SERVICE.smart_read();
         return RESULT;

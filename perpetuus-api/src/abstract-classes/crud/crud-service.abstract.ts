@@ -4,9 +4,7 @@ export abstract class CRUD_Service<UsedModel, Schema> {
     abstract getmodel(): UsedModel;
 
     abstract create(...args: any[]): Promise<types.DocumentType<Schema>>;
-    abstract read(
-        ...args: any[]
-    ): Promise<{
+    abstract read(...args: any[]): Promise<{
         result: types.DocumentType<Schema>[] | Schema[];
         total: number;
         pagination: Pagination;

@@ -49,12 +49,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // REQUEST LOGS
 app.use((req: Request, res: Response, next: any) => {
-    let body = JSON.stringify(req.body, undefined, 2).split('\n')
-    let formed_body: string
+    let body = JSON.stringify(req.body, undefined, 2).split('\n');
+    let formed_body: string;
     if (body.length > 150) {
-        formed_body = body.slice(0, 149).join('\n').concat('\n. . .\n')
+        formed_body = body.slice(0, 149).join('\n').concat('\n. . .\n');
     } else {
-        formed_body = body.join('\n')
+        formed_body = body.join('\n');
     }
 
     syslog._Request(
@@ -66,9 +66,8 @@ app.use((req: Request, res: Response, next: any) => {
             `[BODY      ] ${formed_body}\n` +
             `[QUERY     ] ${JSON.stringify(req.query, undefined, 2)}\n` +
             `[PARAMS    ] ${JSON.stringify(req.params, undefined, 2)}\n` +
-        `------------------------------------------------------------------`
-
-    )
+            `------------------------------------------------------------------`
+    );
     next();
 });
 

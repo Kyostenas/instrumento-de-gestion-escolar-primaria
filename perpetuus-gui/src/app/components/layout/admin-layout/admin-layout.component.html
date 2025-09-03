@@ -3,19 +3,25 @@
     (scroll)="scroll_ventana($event)"
     style="max-height: 100vh"
 >
-    @switch (modo_viewport()) { @case ('escritorio') {
-    <div class="d-flex h-100 flex-grow-1">
-        <div>
-            <app-barra-lateral-menu></app-barra-lateral-menu>
-        </div>
-        <ng-container [ngTemplateOutlet]="paginaPrincipal"></ng-container>
-    </div>
-    } @case ('movil') {
-    <ng-container [ngTemplateOutlet]="paginaPrincipal"></ng-container>
-    <div class="d-block d-sm-block sticky-bottom mt-5">
-        <app-barra-lateral-menu></app-barra-lateral-menu>
-    </div>
-    } @default {} }
+    @switch (modo_viewport()) {
+        @case ('escritorio') {
+            <div class="d-flex h-100 flex-grow-1">
+                <div>
+                    <app-barra-lateral-menu></app-barra-lateral-menu>
+                </div>
+                <ng-container
+                    [ngTemplateOutlet]="paginaPrincipal"
+                ></ng-container>
+            </div>
+        }
+        @case ('movil') {
+            <ng-container [ngTemplateOutlet]="paginaPrincipal"></ng-container>
+            <div class="d-block d-sm-block sticky-bottom mt-5">
+                <app-barra-lateral-menu></app-barra-lateral-menu>
+            </div>
+        }
+        @default {}
+    }
 </div>
 
 <ng-template #paginaPrincipal>
@@ -24,21 +30,21 @@
         [ngClass]="{ 'container-fluid tw-gap-[8px]': valid_session() }"
     >
         @if (valid_session()) {
-        <div
-            class="sticky-top rounded-bottom-3 border-bottom border-secondary tw-backdrop-blur tw-h-[40px]"
-        >
-            <div class="!tw-opacity-60 bg-body rounded-bottom-3">
-                <app-barra-breadcrumbs
-                    barra-breadcrumbs
-                ></app-barra-breadcrumbs>
+            <div
+                class="sticky-top rounded-bottom-3 border-bottom border-secondary tw-backdrop-blur tw-h-[40px]"
+            >
+                <div class="!tw-opacity-60 bg-body rounded-bottom-3">
+                    <app-barra-breadcrumbs
+                        barra-breadcrumbs
+                    ></app-barra-breadcrumbs>
+                </div>
             </div>
-        </div>
         }
         <div
             class="d-flex"
             [ngClass]="{
-            'tw-gap-[8px]': !!using_side_panel(),
-        }"
+                'tw-gap-[8px]': !!using_side_panel()
+            }"
         >
             <div class="tw-w-[100%]">
                 <router-outlet></router-outlet>

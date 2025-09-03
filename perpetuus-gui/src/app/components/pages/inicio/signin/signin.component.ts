@@ -15,7 +15,10 @@ import { AuthService } from 'src/app/services/inicio/signin/auth.service';
     styleUrl: './signin.component.scss'
 })
 export class SigninComponent implements OnInit {
-    constructor(private auth_service: AuthService, private router: Router) {}
+    constructor(
+        private auth_service: AuthService,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this.auth_service.validar_sesion().subscribe((sesion_es_valida) => {

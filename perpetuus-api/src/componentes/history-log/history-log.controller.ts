@@ -18,13 +18,13 @@ export class HistoryLogController extends CRUD_Controller<
 
     create = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         throw new Error('Method not implemented.');
     };
     read = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         return this.try_operation({
             res,
@@ -37,30 +37,30 @@ export class HistoryLogController extends CRUD_Controller<
             filename: __filename,
             fields_to_validate: {
                 req_query_filters: ['document_id']
-            },
+            }
         });
     };
     read_by_sequence = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         throw new Error('Method not implemented.');
     };
     update = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         throw new Error('Method not implemented.');
     };
     activate = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         throw new Error('Method not implemented.');
     };
     deactivate = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         throw new Error('Method not implemented.');
     };
@@ -68,5 +68,4 @@ export class HistoryLogController extends CRUD_Controller<
     // (o-----------------------------------------------------------/\-----o)
     //   #endregion CRUD
     // (o==================================================================o)
-
 }

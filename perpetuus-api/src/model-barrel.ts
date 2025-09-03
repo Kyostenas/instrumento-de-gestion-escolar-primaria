@@ -2,7 +2,7 @@
 import {
     HISTORY_LOG_MODEL,
     HistoryLog
-} from './plugins/history/history-log.model';
+} from './componentes/history-log/history-log.model';
 import { User, USER_MODEL } from './componentes/usuario/usuario/usuario.model';
 import {
     Rol,

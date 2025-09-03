@@ -22,7 +22,7 @@ export abstract class CRUD_Service<MODEL> {
         filter,
         create_notification = true,
         success_title = 'Correcto',
-        error_title = 'Algo saló mal',
+        error_title = 'Algo saló mal'
     }: {
         operation: 'get' | 'post' | 'put' | 'delete';
         base_model: Class<MODEL>;
@@ -36,7 +36,7 @@ export abstract class CRUD_Service<MODEL> {
     }) {
         let url = this.utilites.preparar_url_conexion_api([
             this.base_route,
-            ...(route || []),
+            ...(route || [])
         ]);
         let query: {
             pagination?: string;
@@ -81,7 +81,7 @@ export abstract class CRUD_Service<MODEL> {
                         tipo: 'toast',
                         modo: 'success',
                         titulo: success_title,
-                        cuerpo_mensaje: resp.mensaje,
+                        cuerpo_mensaje: resp.mensaje
                     });
                 }
                 if (pagination) {
@@ -89,7 +89,7 @@ export abstract class CRUD_Service<MODEL> {
                         (document: any) => new base_model(document)
                     );
                 } else {
-                    return new base_model(resp.datos)
+                    return new base_model(resp.datos);
                 }
             }),
             catchError((err) => {
@@ -97,7 +97,7 @@ export abstract class CRUD_Service<MODEL> {
                     tipo: 'toast',
                     modo: 'danger',
                     titulo: error_title,
-                    cuerpo_mensaje: err.error.mensaje,
+                    cuerpo_mensaje: err.error.mensaje
                 });
                 return throwError(() => new Error(err));
             })
