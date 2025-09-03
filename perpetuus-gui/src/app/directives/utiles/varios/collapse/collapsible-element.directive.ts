@@ -10,11 +10,11 @@ import {
     OnInit,
     Output,
     PLATFORM_ID,
-    Renderer2,
+    Renderer2
 } from '@angular/core';
 
 @Directive({
-    selector: '[collapse]',
+    selector: '[collapse]'
 })
 export class CollapsibleElementDirective implements OnInit {
     // (o==================================================================o)
@@ -93,7 +93,7 @@ export class CollapsibleElementDirective implements OnInit {
                 childList: true,
                 characterData: true,
                 attributes: true,
-                subtree: true,
+                subtree: true
             });
         }
     }

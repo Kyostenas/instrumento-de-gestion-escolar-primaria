@@ -11,9 +11,9 @@ export const PERMISOS_DISPONIBLES = {
             _ALMACENES: 'MENU.ADMIN.ALMACENES',
             ALMACENES: {
                 ADMINISTRAR: 'MENU.ADMIN.ALMACENES.ADMINSITRAR',
-                ARTICULOS: 'MENU.ADMIN.ALMACENES.ARTICULOS',
-            },
-        },
+                ARTICULOS: 'MENU.ADMIN.ALMACENES.ARTICULOS'
+            }
+        }
     },
     ROL: {
         CREAR: 'ROL.CREAR',
@@ -23,7 +23,7 @@ export const PERMISOS_DISPONIBLES = {
         PERMISO: {
             AGREGAR: 'ROL.PERMISO.AGREGAR',
             OBTENER: 'ROL.PERMISO.OBTENER',
-            ELIMINAR: 'ROL.PERMISO.ELIMINAR',
+            ELIMINAR: 'ROL.PERMISO.ELIMINAR'
         }
     },
     USUARIO: {
@@ -33,17 +33,14 @@ export const PERMISOS_DISPONIBLES = {
         ACTIVAR_DESACTIVAR: 'USUARIO.ACTIVAR_DESACTIVAR',
         ROL: {
             AGREGAR: 'USUARIO.ROL.AGREGAR',
-            ELIMINAR: 'USUARIO.ROL.ELIMINAR',
+            ELIMINAR: 'USUARIO.ROL.ELIMINAR'
         }
     }
 } as const;
 
-export type PERMISOS_PERPETUUS = 
-    DeepKeys<
-        typeof PERMISOS_DISPONIBLES, string
-    >
+export type PERMISOS_PERPETUUS = DeepKeys<typeof PERMISOS_DISPONIBLES, string>;
 
-export type PERMISOS_MENU_PERPETUUS = 
-    DeepKeys<
-        typeof PERMISOS_DISPONIBLES.MENU, string
-    >
+export type PERMISOS_MENU_PERPETUUS = DeepKeys<
+    typeof PERMISOS_DISPONIBLES.MENU,
+    string
+>;

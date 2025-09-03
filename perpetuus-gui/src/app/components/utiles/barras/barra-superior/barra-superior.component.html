@@ -2,24 +2,26 @@
     class="navbar navbar-expand-lg bd-navbar bg-body-tertiary"
     id="barra_superior"
 >
-    <nav 
+    <nav
         class="ps-3 bd-gutter flex-wrap flex-lg-nowrap d-flex"
         aria-label="Main navigation"
     >
-        <button 
-            class="navbar-toggler d-flex p-2 ms-4 order-3 d-md-block d-lg-none" 
-            type="button" 
-            data-bs-toggle="offcanvas" 
-            [attr.data-bs-target]="'#'+id_offcanvas"
+        <button
+            class="navbar-toggler d-flex p-2 ms-4 order-3 d-md-block d-lg-none"
+            type="button"
+            data-bs-toggle="offcanvas"
+            [attr.data-bs-target]="'#' + id_offcanvas"
             [attr.aria-controls]="id_offcanvas"
             aria-label="Toggle navigation"
         >
-            <i 
-                class="bi-three-dots-vertical"
-            ></i>
+            <i class="bi-three-dots-vertical"></i>
         </button>
         <div class="flex-lg-grow-0">
-            <a class="navbar-brand ml-3" href="#">Perpetuus</a>
+            <a
+                class="navbar-brand ml-3"
+                href="#"
+                >Perpetuus</a
+            >
         </div>
         <div
             [class]="clase_mostrar_offcanvas"
@@ -32,57 +34,42 @@
             role="dialog"
         >
             <div class="offcanvas-header px-4 pb-0">
-                <h5 
+                <h5
                     class="offcanvas-title"
                     id="offcanvas-opciones-barra-navegacion"
                 >
                     Perpetuus
                 </h5>
-                <button 
-                    type="button" 
-                    class="btn-close btn-close-dark" 
-                    data-bs-dismiss="offcanvas" 
+                <button
+                    type="button"
+                    class="btn-close btn-close-dark"
+                    data-bs-dismiss="offcanvas"
                     aria-label="Close"
-                    
-                ></button>                
+                ></button>
             </div>
             <div class="offcanvas-body p-4 pt-0 p-lg-0">
-                <hr class="d-lg-none">
+                <hr class="d-lg-none" />
                 <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav">
                     @for (link_texto of links_texto; track link_texto) {
                         <li class="nav-item col-6 col-lg-auto">
-                            <a 
-                                class="nav-link py-2 px-0 px-lg-2" 
-                                [href]="link_texto.href" 
+                            <a
+                                class="nav-link py-2 px-0 px-lg-2"
+                                [href]="link_texto.href"
                             >
                                 {{ link_texto.texto }}
                             </a>
                         </li>
                     }
                 </ul>
-                <hr class="d-lg-none">
+                <hr class="d-lg-none" />
                 <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
                     @for (link_simbolo of links_simbolo; track link_simbolo) {
                         <li class="nav-item col-6 col-lg-auto">
-
                             @switch (!!link_simbolo.href) {
-                              @case (true) {
-                                  <a 
-                                      class="nav-link py-2 px-0 px-lg-2" 
-                                      [href]="link_simbolo.href" 
-                                      rel="noopener"
-                                  >
-                                      <i [class]="link_simbolo.simbolo"></i>
-                                      <small class="d-lg-none ms-2">
-                                          {{ link_simbolo.texto }}
-                                      </small>
-                                  </a>
-                                }
-                                @case (false) {
-                                    <a 
-                                        class="nav-link py-2 px-0 px-lg-2" 
-                                        [attr.data-bs-target]="link_simbolo.data_bs_target" 
-                                        [attr.data-bs-toggle]="link_simbolo.data_bs_toggle" 
+                                @case (true) {
+                                    <a
+                                        class="nav-link py-2 px-0 px-lg-2"
+                                        [href]="link_simbolo.href"
                                         rel="noopener"
                                     >
                                         <i [class]="link_simbolo.simbolo"></i>
@@ -90,24 +77,35 @@
                                             {{ link_simbolo.texto }}
                                         </small>
                                     </a>
-                              }
+                                }
+                                @case (false) {
+                                    <a
+                                        class="nav-link py-2 px-0 px-lg-2"
+                                        [attr.data-bs-target]="
+                                            link_simbolo.data_bs_target
+                                        "
+                                        [attr.data-bs-toggle]="
+                                            link_simbolo.data_bs_toggle
+                                        "
+                                        rel="noopener"
+                                    >
+                                        <i [class]="link_simbolo.simbolo"></i>
+                                        <small class="d-lg-none ms-2">
+                                            {{ link_simbolo.texto }}
+                                        </small>
+                                    </a>
+                                }
                             }
-
                         </li>
                     }
                 </ul>
-                <hr class="d-lg-none">
-                <div class="    
-                    d-block 
-                    d-sm-block 
-                    d-md-block 
-                    d-lg-none 
-                    d-xl-none 
-                    d-xxl-none
-                ">
+                <hr class="d-lg-none" />
+                <div
+                    class="d-block d-sm-block d-md-block d-lg-none d-xl-none d-xxl-none"
+                >
                     <app-barra-lateral-menu></app-barra-lateral-menu>
                 </div>
             </div>
-        </div>     
+        </div>
     </nav>
 </header>

@@ -21,7 +21,7 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
 
     create = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, user_id: req.usuario?._id };
         return this.try_operation({
@@ -37,13 +37,13 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
                 'nombres',
                 'apellidos',
                 'nombre_usuario',
-                'contrasena',
-            ],
+                'contrasena'
+            ]
         });
-    }
+    };
     read = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         return this.try_operation({
             res,
@@ -52,12 +52,12 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
             res_message: 'Se obtuvieron todos los usuarios',
             err_message: 'Error al crear usuario',
             is_creation: false,
-            filename: __filename,
+            filename: __filename
         });
-    }
+    };
     read_by_sequence = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         return this.try_operation({
             res,
@@ -69,18 +69,18 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
             not_found_message: 'No existe un usuario con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence'],
+            fields_to_validate: ['sequence']
         });
-    }
+    };
     update = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, ...req.params, user_id: req.usuario?._id };
         const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         if (!!SUPER_ADMIN) {
             return new Resp(res, __filename, {
-                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`,
+                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`
             })._403_forbidden();
         }
         return this.try_operation({
@@ -93,18 +93,18 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
             not_found_message: 'No existe un usuario con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence', 'user_id'],
+            fields_to_validate: ['sequence', 'user_id']
         });
-    }
+    };
     activate = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, ...req.params, user_id: req.usuario?._id };
         const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         if (!!SUPER_ADMIN) {
             return new Resp(res, __filename, {
-                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`,
+                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`
             })._403_forbidden();
         }
         return this.try_operation({
@@ -117,18 +117,18 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
             not_found_message: 'No existe un usuario con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence', 'user_id'],
+            fields_to_validate: ['sequence', 'user_id']
         });
-    }
+    };
     deactivate = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, ...req.params, user_id: req.usuario?._id };
         const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         if (!!SUPER_ADMIN) {
             return new Resp(res, __filename, {
-                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`,
+                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`
             })._403_forbidden();
         }
         return this.try_operation({
@@ -141,9 +141,9 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
             not_found_message: 'No existe un usuario con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence', 'user_id'],
+            fields_to_validate: ['sequence', 'user_id']
         });
-    }
+    };
 
     // (o-----------------------------------------------------------/\-----o)
     //   #endregion CRUD
@@ -155,13 +155,13 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
 
     assign_rol_to_user = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, ...req.params, user_id: req.usuario?._id };
         const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         if (!!SUPER_ADMIN) {
             return new Resp(res, __filename, {
-                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`,
+                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`
             })._403_forbidden();
         }
         return this.try_operation({
@@ -174,18 +174,18 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
             not_found_message: 'No existe un usuario con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence', 'rol', 'user_id'],
+            fields_to_validate: ['sequence', 'rol', 'user_id']
         });
-    }
+    };
     remove_rol_from_user = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, ...req.params, user_id: req.usuario?._id };
         const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         if (!!SUPER_ADMIN) {
             return new Resp(res, __filename, {
-                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`,
+                mensaje: `No se puede modificar el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`
             })._403_forbidden();
         }
         return this.try_operation({
@@ -198,12 +198,12 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
             not_found_message: 'No existe un usuario con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence', 'rol', 'user_id'],
+            fields_to_validate: ['sequence', 'rol', 'user_id']
         });
-    }
+    };
     create_super_admin = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         return this.try_operation({
             res,
@@ -213,9 +213,9 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
             res_message: `Usuario ${NOMBRE_USUARIO_SUPER_ADMIN} creado`,
             err_message: `Error al crear el usuario ${NOMBRE_USUARIO_SUPER_ADMIN}`,
             is_creation: false,
-            filename: __filename,
+            filename: __filename
         });
-    }
+    };
 
     private test_if_super_admin = async (sequence: number) => {
         const ROL = await this.getmodel()
@@ -223,7 +223,7 @@ export class UserController extends CRUD_Controller<typeof USER_MODEL> {
             .populate<{ rol: DocumentType<Rol> }>('rol')
             .lean();
         return ROL?.rol?.super_admin;
-    }
+    };
 
     // (o-----------------------------------------------------------/\-----o)
     //   #endregion EXTRA-ACTIONS

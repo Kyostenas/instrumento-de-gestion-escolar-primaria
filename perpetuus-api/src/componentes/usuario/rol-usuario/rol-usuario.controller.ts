@@ -22,7 +22,7 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
 
     create = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, user_id: req.usuario?._id };
         return this.try_operation({
@@ -34,14 +34,14 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             err_message: 'Error al crear rol',
             is_creation: true,
             filename: __filename,
-            fields_to_validate: ['nombre', 'description', 'user_id'],
+            fields_to_validate: ['nombre', 'description', 'user_id']
         });
     };
     read = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
-        const BODY = req.query
+        const BODY = req.query;
         return this.try_operation({
             res,
             req,
@@ -50,12 +50,12 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             res_message: 'Se obtuvieron todos los roles',
             err_message: 'Error al crear rol',
             is_creation: false,
-            filename: __filename,
+            filename: __filename
         });
     };
     read_by_sequence = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         return this.try_operation({
             res,
@@ -67,18 +67,18 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence'],
+            fields_to_validate: ['sequence']
         });
     };
     update = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, ...req.params, user_id: req.usuario?._id };
         const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         if (!!SUPER_ADMIN) {
             return new Resp(res, __filename, {
-                mensaje: `No se puede modificar el rol de ${NOMBRE_ROL_SUPER_ADMIN}`,
+                mensaje: `No se puede modificar el rol de ${NOMBRE_ROL_SUPER_ADMIN}`
             })._403_forbidden();
         }
         return this.try_operation({
@@ -91,23 +91,18 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: [
-                'nombre',
-                'description',
-                'sequence',
-                'user_id',
-            ],
+            fields_to_validate: ['nombre', 'description', 'sequence', 'user_id']
         });
     };
     activate = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, ...req.params, user_id: req.usuario?._id };
         const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         if (!!SUPER_ADMIN) {
             return new Resp(res, __filename, {
-                mensaje: `No se puede modificar el rol de ${NOMBRE_ROL_SUPER_ADMIN}`,
+                mensaje: `No se puede modificar el rol de ${NOMBRE_ROL_SUPER_ADMIN}`
             })._403_forbidden();
         }
         return this.try_operation({
@@ -120,18 +115,18 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence', 'user_id'],
+            fields_to_validate: ['sequence', 'user_id']
         });
     };
     deactivate = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         const BODY = { ...req.body, ...req.params, user_id: req.usuario?._id };
         const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         if (!!SUPER_ADMIN) {
             return new Resp(res, __filename, {
-                mensaje: `No se puede modificar el rol de ${NOMBRE_ROL_SUPER_ADMIN}`,
+                mensaje: `No se puede modificar el rol de ${NOMBRE_ROL_SUPER_ADMIN}`
             })._403_forbidden();
         }
         return this.try_operation({
@@ -144,7 +139,7 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence', 'user_id'],
+            fields_to_validate: ['sequence', 'user_id']
         });
     };
 
@@ -158,15 +153,17 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
 
     add_permissions_to_rol = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
-        validar_existencia_de_campos(['sequence'], req.params)
-        const rol = await new RolService().read_by_sequence({sequence: Number(req.params.sequence)});
+        validar_existencia_de_campos(['sequence'], req.params);
+        const rol = await new RolService().read_by_sequence({
+            sequence: Number(req.params.sequence)
+        });
         const BODY = {
             ...req.body,
             ...req.params,
             user_id: req.usuario?._id,
-            rol,
+            rol
         };
         // const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         // if (!!SUPER_ADMIN) {
@@ -184,21 +181,23 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['permissions', 'rol', 'user_id'],
+            fields_to_validate: ['permissions', 'rol', 'user_id']
         });
     };
 
     remove_permissions_from_rol = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
-        validar_existencia_de_campos(['sequence'], req.params)
-        const rol = new RolService().read_by_sequence({sequence: Number(req.params.sequence)});
+        validar_existencia_de_campos(['sequence'], req.params);
+        const rol = new RolService().read_by_sequence({
+            sequence: Number(req.params.sequence)
+        });
         const BODY = {
             ...req.body,
             ...req.params,
             user_id: req.usuario?._id,
-            rol,
+            rol
         };
         // const SUPER_ADMIN = this.test_if_super_admin(BODY.sequence);
         // if (!!SUPER_ADMIN) {
@@ -216,13 +215,13 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['permissions', 'rol', 'user_id'],
+            fields_to_validate: ['permissions', 'rol', 'user_id']
         });
     };
 
     creat_superadmin_rol = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         return this.try_operation({
             res,
@@ -231,13 +230,13 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             res_message: `Rol de ${NOMBRE_ROL_SUPER_ADMIN} creado`,
             err_message: `Error al crear el rol de ${NOMBRE_ROL_SUPER_ADMIN}`,
             is_creation: false,
-            filename: __filename,
+            filename: __filename
         });
     };
 
     get_permissions = async (
         req: Request,
-        res: Response,
+        res: Response
     ): Promise<Response<any, Record<string, any>>> => {
         return this.try_operation({
             res,
@@ -246,7 +245,7 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
             res_message: `Rol de ${NOMBRE_ROL_SUPER_ADMIN} creado`,
             err_message: `Error al crear el rol de ${NOMBRE_ROL_SUPER_ADMIN}`,
             is_creation: false,
-            filename: __filename,
+            filename: __filename
         });
     };
 

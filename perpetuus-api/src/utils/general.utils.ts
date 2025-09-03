@@ -26,7 +26,7 @@ export const NOMBRES_MESES = {
     9: { largo: 'septiembre', corto: 'sep' },
     10: { largo: 'octubre', corto: 'oct' },
     11: { largo: 'noviembre', corto: 'nov' },
-    12: { largo: 'diciembre', corto: 'dic' },
+    12: { largo: 'diciembre', corto: 'dic' }
 };
 export const NOMBRES_DIAS = {
     1: { largo: 'domingo', corto: 'dom' },
@@ -35,7 +35,7 @@ export const NOMBRES_DIAS = {
     4: { largo: 'miércoles', corto: 'mié' },
     5: { largo: 'jueves', corto: 'jue' },
     6: { largo: 'viernes', corto: 'vie' },
-    7: { largo: 'sábado', corto: 'sáb' },
+    7: { largo: 'sábado', corto: 'sáb' }
 };
 
 export function particionarArreglo(arreglo: any[], tamParticiones: number) {
@@ -49,7 +49,7 @@ export function particionarArreglo(arreglo: any[], tamParticiones: number) {
 
 export function partcion_arbitraria_arreglo(
     arreglo: any[],
-    tams_particiones: number[],
+    tams_particiones: number[]
 ) {
     let anterior = 0;
     let partes: any[][] = [];
@@ -73,7 +73,7 @@ export function escaparCadenaDeTexto(cadena: string) {
 
 export function regexSeleccionarNoRepetidas(
     palabrasExistentes: string[],
-    escapar = false,
+    escapar = false
 ) {
     let cadenaPalabrasAIgnorar = palabrasExistentes.join('|');
     let cadenaRegex = `^(?!(${cadenaPalabrasAIgnorar})$).*$`;
@@ -112,7 +112,7 @@ export function separarCamelcase(palabra: string, callback: any): string {
  */
 export function separarSnakeCaseDotCase(
     palabra: string,
-    callback: any,
+    callback: any
 ): string {
     if (callback !== null) return callback(palabra.replace(/[\._-]/g, ' '));
     return palabra.replace(/[\._-]/g, ' ');
@@ -136,7 +136,7 @@ export function rellenarCerosIzquierda(numero: any, largo: number) {
 
 export function rellenarCerosIzquierdaRecursivo(
     numero: any,
-    largo: number,
+    largo: number
 ): string {
     return numero.toString().length < largo
         ? rellenarCerosIzquierdaRecursivo('0' + numero, largo)
@@ -145,7 +145,7 @@ export function rellenarCerosIzquierdaRecursivo(
 
 export function obtenerDiasEnTotalDeUnMes(mes: number, year: number) {
     let entradasBinario = convertirBinarioABooleanos(
-        convertirDecimalABaseDesde2A32(mes, 2, 4),
+        convertirDecimalABaseDesde2A32(mes, 2, 4)
     );
 
     // (o-----------------------------------------( CONSTANTES PARA OPERACION LOGICA (BOOLEANA) ))
@@ -166,7 +166,7 @@ export function obtenerDiasEnTotalDeUnMes(mes: number, year: number) {
             (B && D) ||
             (!C && !B && !A) ||
             (!C && !B && !D) ||
-            (D && !A),
+            (D && !A)
     ].join('');
 
     //     "00" > 0   Meses con 30 dias
@@ -186,7 +186,7 @@ export function obtenerDiasEnTotalDeUnMes(mes: number, year: number) {
 export function convertirDecimalABaseDesde2A32(
     numero: any,
     base: number,
-    rellenoCeros: number,
+    rellenoCeros: number
 ) {
     let binStr = Number(numero).toString(base);
     return rellenarCerosIzquierda(binStr, rellenoCeros);
@@ -272,7 +272,7 @@ export function aumentarDiasAFecha(fecha: Date, diasAumento: number): Date {
  */
 export function convertirArregloObjetosAObjeto(
     arreglo: { [type: string]: any }[],
-    campoContenedor: string,
+    campoContenedor: string
 ) {
     if (!arreglo) return {};
     let objetoDeObjetos: { [type: string]: any } = {};
@@ -414,44 +414,44 @@ export function seleccionarCampoCualquierNivelProfundo(
     objeto: any,
     campo: string,
     separador: string,
-        opciones?: {
-            /**
-             * Es el valor que retorna cuando el campo no existe.
-             * 
-             * Por defecto `''`.
-             */
-            reemplazoValorIndefinido?: any;
-            /**
-             * El valor que retorna cuando hay algun error.
-             * 
-             * Por defecto `undefined`.
-             */
-            valorError?: any;
-            /**
-             * Si la funcion retorna un arreglo con sub-arreglos,
-             * aplanarlos.
-             * 
-             * Por defecto `true`.
-             */
-            aplanarSubArreglos?: boolean;
-            /**
-             * Si en la direccion especificada en `campo` hay
-             * arreglos de objetos y se hace referencia a campos en
-             * esos objetos, se traera el resultado de ese campo por
-             * cada objeto en el arreglo.
-             * 
-             * En cambio, si esta opcion se marca como `true`,
-             * se debera referenciar el indice del objeto especifico
-             * en el arreglo en el que se debera buscar el campo.
-             * 
-             * Si la ruta del campo era `objeto.arreglo_objetos.campo_objeto`,
-             * ahora debera ser `objeto.arreglo_objetos.1.campo_objeto`
-             * (el `1` solo es de ejemplo).
-             * 
-             * Por defecto `false`.
-             */
-            noRecorrerArreglos?: boolean,
-        }
+    opciones?: {
+        /**
+         * Es el valor que retorna cuando el campo no existe.
+         *
+         * Por defecto `''`.
+         */
+        reemplazoValorIndefinido?: any;
+        /**
+         * El valor que retorna cuando hay algun error.
+         *
+         * Por defecto `undefined`.
+         */
+        valorError?: any;
+        /**
+         * Si la funcion retorna un arreglo con sub-arreglos,
+         * aplanarlos.
+         *
+         * Por defecto `true`.
+         */
+        aplanarSubArreglos?: boolean;
+        /**
+         * Si en la direccion especificada en `campo` hay
+         * arreglos de objetos y se hace referencia a campos en
+         * esos objetos, se traera el resultado de ese campo por
+         * cada objeto en el arreglo.
+         *
+         * En cambio, si esta opcion se marca como `true`,
+         * se debera referenciar el indice del objeto especifico
+         * en el arreglo en el que se debera buscar el campo.
+         *
+         * Si la ruta del campo era `objeto.arreglo_objetos.campo_objeto`,
+         * ahora debera ser `objeto.arreglo_objetos.1.campo_objeto`
+         * (el `1` solo es de ejemplo).
+         *
+         * Por defecto `false`.
+         */
+        noRecorrerArreglos?: boolean;
+    }
 ): any {
     if (!opciones) opciones = {};
     opciones.reemplazoValorIndefinido = opciones.reemplazoValorIndefinido ?? '';
@@ -470,9 +470,9 @@ export function seleccionarCampoCualquierNivelProfundo(
                             unSubObjeto,
                             pasoRuta,
                             ' ',
-                            opciones,
+                            opciones
                         );
-                    },
+                    }
                 );
                 if (!opciones.aplanarSubArreglos) {
                     objetoActual = objetoActualTemporal;
@@ -532,13 +532,13 @@ export function ordenarArreglo(arreglo: any[], campo: string = '') {
                 /(\d+)|(\D+)/g,
                 function (_: any, $1: any, $2: any) {
                     ax.push([$1 || Infinity, $2 || '']);
-                },
+                }
             );
             b[campo].replace(
                 /(\d+)|(\D+)/g,
                 function (_: any, $1: any, $2: any) {
                     bx.push([$1 || Infinity, $2 || '']);
-                },
+                }
             );
         } else {
             a.replace(/(\d+)|(\D+)/g, function (_: any, $1: any, $2: any) {
@@ -564,7 +564,7 @@ export function ordenarArreglo(arreglo: any[], campo: string = '') {
 
 export function validarParametros(
     campos: any[],
-    parametrosAValidar: { hasOwnProperty: (arg0: any) => any },
+    parametrosAValidar: { hasOwnProperty: (arg0: any) => any }
 ) {
     campos.forEach((campoAValidar) => {
         if (!parametrosAValidar.hasOwnProperty(campoAValidar)) {
@@ -582,7 +582,7 @@ export function parsearFechaEnArreglo(fecha: Date): number[] {
         fecha.getHours(),
         fecha.getMinutes(),
         fecha.getSeconds(),
-        fecha.getMilliseconds(),
+        fecha.getMilliseconds()
     ];
 }
 
@@ -590,12 +590,12 @@ export function diferenciaFechas(fecha1: Date, fecha2: Date) {
     const fecha1utc = Date.UTC(
         fecha1.getFullYear(),
         fecha1.getMonth(),
-        fecha1.getDate(),
+        fecha1.getDate()
     );
     const fecha2utc = Date.UTC(
         fecha2.getFullYear(),
         fecha2.getMonth(),
-        fecha2.getDate(),
+        fecha2.getDate()
     );
     return (fecha1utc - fecha2utc) / DIA;
 }
@@ -624,7 +624,7 @@ export function removerElementoNoSparse(arreglo: any, indice_eliminar: number) {
     return arreglo.filter(function (
         actual: any,
         indice_actual: number,
-        arr: any,
+        arr: any
     ) {
         return indice_actual !== indice_eliminar;
     });
@@ -652,9 +652,9 @@ export function remove_non_alpha_chars(a_string: string): string {
 /**
  * Esto es como hacer on Object.values pero recursivo. Entra a todos
  * los niveles del objeto y retorna un solo arreglo aplanado.
- * 
+ *
  * Es una funcion recursiva, asi que usar con precaucion.
- * 
+ *
  * @param objeto El objeto a recorrer
  * @returns Un arreglo de todos los valores en todos los niveles del objeto
  */

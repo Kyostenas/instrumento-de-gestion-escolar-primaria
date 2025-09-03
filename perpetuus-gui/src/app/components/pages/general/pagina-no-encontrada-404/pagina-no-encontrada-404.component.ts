@@ -8,14 +8,9 @@ import { StandardRoutingService } from 'src/app/services/utiles/estructurales/st
     styleUrl: './pagina-no-encontrada-404.component.scss'
 })
 export class PaginaNoEncontrada404Component {
-
-    constructor(
-        private standard_routing_service: StandardRoutingService,
-    ) {
-    }
+    constructor(private standard_routing_service: StandardRoutingService) {}
 
     go_back() {
-        this.standard_routing_service.go_back()
+        this.standard_routing_service.go_back();
     }
-
 }

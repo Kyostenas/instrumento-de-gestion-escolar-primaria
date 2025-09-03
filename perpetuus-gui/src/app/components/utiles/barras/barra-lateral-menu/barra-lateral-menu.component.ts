@@ -10,33 +10,29 @@ import { DeepValues } from 'src/app/utiles/tipos-personalizados';
 
 @Component({
     selector: 'app-barra-lateral-menu',
-    imports: [
-        CommonModule,
-        BootstrapTooltipDirective,
-        RouterModule,
-    ],
+    imports: [CommonModule, BootstrapTooltipDirective, RouterModule],
     templateUrl: './barra-lateral-menu.component.html',
     styleUrl: './barra-lateral-menu.component.scss'
 })
 export class BarraLateralMenuComponent implements OnInit {
+    constructor(
+        private utiles: UtilidadesService,
+        private fragmentos: FragmentCallbackService,
+        private viewport: DeteccionViewportService
+    ) {}
 
-  constructor(
-    private utiles: UtilidadesService,
-    private fragmentos: FragmentCallbackService,
-    private viewport: DeteccionViewportService,
-  ) {}
+    ngOnInit(): void {
+        this.lista_menu = this.utiles.consultar_local_storage('menus');
+    }
 
-  ngOnInit(): void {
-    this.lista_menu = 
-      this.utiles.consultar_local_storage('menus')
-  }
+    modo_viewport: WritableSignal<'movil' | 'escritorio'> =
+        this.viewport.modo_viewport;
 
-  modo_viewport: WritableSignal<'movil' | 'escritorio'> = this.viewport.modo_viewport
+    agregar_framento(
+        fragmento: DeepValues<typeof this.fragmentos.ALLOWED_FRAGMENTS, string>
+    ) {
+        this.fragmentos.add_fragment(fragmento);
+    }
 
-  agregar_framento(fragmento: DeepValues<typeof this.fragmentos.ALLOWED_FRAGMENTS, string>) {
-    this.fragmentos.add_fragment(fragmento)
-  }
-
-  lista_menu!: DESCRIPCION_MENU[]
-  
+    lista_menu!: DESCRIPCION_MENU[];
 }

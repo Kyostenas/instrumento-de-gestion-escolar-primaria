@@ -1,6 +1,9 @@
-import { REGEX_VALIDACION_CORREO } from "./constantes.utils";
+import { REGEX_VALIDACION_CORREO } from './constantes.utils';
 
-export function validar_existencia_de_campos(campos: string[], objeto: any): {
+export function validar_existencia_de_campos(
+    campos: string[],
+    objeto: any
+): {
     valido: boolean;
     mensaje: string;
 } {
@@ -11,23 +14,24 @@ export function validar_existencia_de_campos(campos: string[], objeto: any): {
         try {
             let encontrado = objeto[un_campo];
             if (!encontrado) {
-                campos_no_encontrados.push(un_campo)
-                todos_correctos = false
+                campos_no_encontrados.push(un_campo);
+                todos_correctos = false;
             }
         } catch (err) {
-            campos_no_encontrados.push(un_campo)
-            todos_correctos = false
+            campos_no_encontrados.push(un_campo);
+            todos_correctos = false;
         }
     }
-    if (todos_correctos) return {
-        valido: true,
-        mensaje: 'correcto',
-    };
+    if (todos_correctos)
+        return {
+            valido: true,
+            mensaje: 'correcto'
+        };
     let campos_error = campos_no_encontrados.join(', ');
     let mensaje_error = `Se requiere el o los campos: ${campos_error}`;
     return {
         valido: false,
-        mensaje: mensaje_error,
+        mensaje: mensaje_error
     };
 }
 

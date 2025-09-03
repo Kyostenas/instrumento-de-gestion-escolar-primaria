@@ -1,9 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+    AbstractControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators
+} from '@angular/forms';
 import ObjectID from 'bson-objectid';
 
-import { CampoBaseFormularioDinamico, TipoCampoBase } from 'src/app/models/utiles/formularios/formulario-dinamico-campo-base.model';
+import {
+    CampoBaseFormularioDinamico,
+    TipoCampoBase
+} from 'src/app/models/utiles/formularios/formulario-dinamico-campo-base.model';
 import { ValidacionFormularioService } from 'src/app/services/utiles/formularios/validacion-formulario/validacion-formulario.service';
 import { ElementoOcultableDirective } from 'src/app/directives/utiles/varios/elemento-ocultable/elemento-ocultable.directive';
 import { MensajesErrorValidacionFormulariosComponent } from '../mensajes-error-validacion-formularios/mensajes-error-validacion-formularios.component';
@@ -16,16 +24,13 @@ import { CollapsibleElementDirective } from 'src/app/directives/utiles/varios/co
         ReactiveFormsModule,
         ElementoOcultableDirective,
         MensajesErrorValidacionFormulariosComponent,
-        CollapsibleElementDirective,
+        CollapsibleElementDirective
     ],
     templateUrl: './formulario-dinamico-campo.component.html',
     styleUrl: './formulario-dinamico-campo.component.scss'
 })
 export class FormularioDinamicoCampoComponent implements OnInit {
-
-    constructor(
-        private servicio_validacion: ValidacionFormularioService
-    ) { }
+    constructor(private servicio_validacion: ValidacionFormularioService) {}
 
     ngOnInit(): void {
         this._id_campo = new ObjectID().toHexString();
@@ -47,25 +52,23 @@ export class FormularioDinamicoCampoComponent implements OnInit {
 
     /**
      * Por defecto `true`.
-     * 
+     *
      * Indica si se revisará la validéz del campo
      */
     @Input() validar: boolean = true;
 
-    @Output('nuevo_cambio') emisor_cambios: EventEmitter<null> = new EventEmitter();
+    @Output('nuevo_cambio') emisor_cambios: EventEmitter<null> =
+        new EventEmitter();
 
     get es_valido(): boolean {
-        return this.formulario_contenedor
-            .controls[this.campo.llave]
-            .valid;
+        return this.formulario_contenedor.controls[this.campo.llave].valid;
     }
 
     get tipo_campo(): TipoCampoBase | 'CHECK' {
         let tipo = this.campo.tipo;
         if (['checkbox', 'radio'].includes(tipo)) {
             return 'CHECK';
-        }
-        else return tipo;
+        } else return tipo;
     }
 
     get clase_campo(): string {
@@ -73,7 +76,7 @@ export class FormularioDinamicoCampoComponent implements OnInit {
             this.campo.clase_bootstrap,
             this.clase_campo_invalido,
             this.clase_campo_valido,
-            this.campo.clase_input,
+            this.campo.clase_input
         ];
         return clases_agregar.join(' ');
     }
@@ -100,14 +103,12 @@ export class FormularioDinamicoCampoComponent implements OnInit {
 
     get placeholder_campo(): string {
         let asterisco = '';
-        if (this.campo_es_obligatorio) asterisco = '*'
+        if (this.campo_es_obligatorio) asterisco = '*';
         return this.campo.etiqueta.concat(asterisco);
     }
 
     get campo_es_obligatorio(): boolean {
-        return this.campo.validaciones_campo.includes(
-            Validators.required
-        );
+        return this.campo.validaciones_campo.includes(Validators.required);
     }
 
     get class_columna(): string {
@@ -115,8 +116,7 @@ export class FormularioDinamicoCampoComponent implements OnInit {
     }
 
     get campo_de_formulario(): AbstractControl<any, any> {
-        return this.formulario_contenedor
-            .controls[this.llave_campo];
+        return this.formulario_contenedor.controls[this.llave_campo];
     }
 
     get campo_invalido(): boolean {
@@ -130,9 +130,7 @@ export class FormularioDinamicoCampoComponent implements OnInit {
 
     get campo_valido(): boolean {
         if (!this.validar) return false;
-        let valido = this.servicio_validacion.valid(
-            this.campo_de_formulario
-        );
+        let valido = this.servicio_validacion.valid(this.campo_de_formulario);
         return valido;
     }
 
@@ -165,17 +163,14 @@ export class FormularioDinamicoCampoComponent implements OnInit {
     }
 
     marcar_campo_tocado() {
-        this.campo_de_formulario
-            .markAsTouched({ onlySelf: true });
+        this.campo_de_formulario.markAsTouched({ onlySelf: true });
     }
 
     marcar_campo_como_limpio() {
-        this.campo_de_formulario
-            .markAsPristine({ onlySelf: true });
+        this.campo_de_formulario.markAsPristine({ onlySelf: true });
     }
 
     emitir_cambio() {
         this.emisor_cambios.emit();
     }
-
 }

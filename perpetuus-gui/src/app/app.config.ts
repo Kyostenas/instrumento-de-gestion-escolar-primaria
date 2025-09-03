@@ -1,17 +1,26 @@
-import { ApplicationConfig, importProvidersFrom, provideZonelessChangeDetection } from "@angular/core";
-import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
-import { APP_ROUTES } from "./app.routes";
-import { provideHttpClient, withFetch, withInterceptorsFromDi } from "@angular/common/http";
-import { BrowserModule } from "@angular/platform-browser";
-
-
-
+import {
+    ApplicationConfig,
+    importProvidersFrom,
+    provideZonelessChangeDetection
+} from '@angular/core';
+import {
+    PreloadAllModules,
+    provideRouter,
+    withPreloading
+} from '@angular/router';
+import { APP_ROUTES } from './app.routes';
+import {
+    provideHttpClient,
+    withFetch,
+    withInterceptorsFromDi
+} from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
 
 export const APP_CONFIG: ApplicationConfig = {
     providers: [
         provideRouter(
             APP_ROUTES,
-            withPreloading( PreloadAllModules ),
+            withPreloading(PreloadAllModules)
             // withDebugTracing(),
         ),
         importProvidersFrom([
@@ -27,12 +36,9 @@ export const APP_CONFIG: ApplicationConfig = {
             //   // or after 30 seconds (whichever comes first).
             //   registrationStrategy: 'registerWhenStable:30000'
             // }),
-            BrowserModule,
+            BrowserModule
         ]),
-        provideHttpClient(
-            withFetch(), 
-            withInterceptorsFromDi(),
-        ),
-        provideZonelessChangeDetection(),
-    ],
+        provideHttpClient(withFetch(), withInterceptorsFromDi()),
+        provideZonelessChangeDetection()
+    ]
 };

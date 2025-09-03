@@ -1,7 +1,17 @@
 import { CommonModule, UpperCasePipe } from '@angular/common';
-import { Component, effect, Signal, signal, WritableSignal } from '@angular/core';
+import {
+    Component,
+    effect,
+    Signal,
+    signal,
+    WritableSignal
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { TablaGenericaComponent, OPCIONES_TABLA_GENERICA, OPCIONES_FILA_TABLA_GENERICA } from 'src/app/components/utiles/varios/tabla-generica/tabla-generica.component';
+import {
+    TablaGenericaComponent,
+    OPCIONES_TABLA_GENERICA,
+    OPCIONES_FILA_TABLA_GENERICA
+} from 'src/app/components/utiles/varios/tabla-generica/tabla-generica.component';
 import { UsuarioRecibir } from 'src/app/models/usuario/usuario.model';
 import { AdministracionUsuariosService } from 'src/app/services/admin/administracion-usuarios/administracion-usuarios.service';
 import { StandardRoutingService } from 'src/app/services/utiles/estructurales/standard-routing/standard-routing.service';
@@ -11,7 +21,7 @@ import { Pagination } from 'src/app/utiles/tipos-personalizados';
     selector: 'app-user-administration-list',
     imports: [TablaGenericaComponent, CommonModule],
     templateUrl: './user-administration-list.component.html',
-    styleUrl: './user-administration-list.component.scss',
+    styleUrl: './user-administration-list.component.scss'
 })
 export class UserAdministrationListComponent {
     // (o==================================================================o)
@@ -20,7 +30,7 @@ export class UserAdministrationListComponent {
 
     constructor(
         private usuario_service: AdministracionUsuariosService,
-        private routing_service: StandardRoutingService,
+        private routing_service: StandardRoutingService
     ) {
         effect(() => {
             // this.paginacion()
@@ -29,9 +39,7 @@ export class UserAdministrationListComponent {
             //     this.usuario_service.obtener_usuarios(this.paginacion())
             // );
         });
-        this.usuarios = toSignal(
-            this.usuario_service.obtener_usuarios()
-        );
+        this.usuarios = toSignal(this.usuario_service.obtener_usuarios());
     }
 
     ngOnInit(): void {
@@ -46,7 +54,7 @@ export class UserAdministrationListComponent {
     //   #region VARIABLES
     // (o-----------------------------------------------------------\/-----o)
 
-    usuarios!: Signal<UsuarioRecibir[] | undefined>
+    usuarios!: Signal<UsuarioRecibir[] | undefined>;
     datos_tabla_generica!: OPCIONES_TABLA_GENERICA<UsuarioRecibir>;
     paginacion!: WritableSignal<Pagination>;
 
@@ -64,46 +72,46 @@ export class UserAdministrationListComponent {
                 {
                     column_title: 'NOMBRE',
                     content: {
-                        field: 'rol.super_admin',
+                        field: 'rol.super_admin'
                     },
                     header_tooltip: {
                         content: 'El nombre real del usuario',
-                        pipe: UpperCasePipe,
-                    },
+                        pipe: UpperCasePipe
+                    }
                 },
                 {
                     column_title: 'USUARIO',
                     content: {
-                        field: 'nombre_usuario',
+                        field: 'nombre_usuario'
                     },
                     header_tooltip: {
                         content:
-                            'El identificador del usuario dentro del sistema',
-                    },
+                            'El identificador del usuario dentro del sistema'
+                    }
                 },
                 {
                     column_title: 'CORREO',
                     content: {
-                        field: 'correo',
+                        field: 'correo'
                     },
                     header_tooltip: {
                         content:
-                            'Un correo electrónico válido proveído por el usuario',
-                    },
+                            'Un correo electrónico válido proveído por el usuario'
+                    }
                 },
                 {
                     column_title: 'NÚMERO CELULAR',
                     content: {
-                        field: 'numero_celular',
+                        field: 'numero_celular'
                     },
                     header_tooltip: {
                         content:
-                            'Un número de celular válido proveído por el usuario',
-                    },
-                },
+                            'Un número de celular válido proveído por el usuario'
+                    }
+                }
             ],
             show_index_column: true,
-            show_sorters: true,
+            show_sorters: true
         };
     }
 
@@ -117,7 +125,7 @@ export class UserAdministrationListComponent {
 
     accion_click_fila(datos: OPCIONES_FILA_TABLA_GENERICA<UsuarioRecibir>) {
         if (datos.row_document.sequence !== undefined) {
-            this.routing_service.open_form(datos.row_document.sequence)
+            this.routing_service.open_form(datos.row_document.sequence);
         }
     }
 

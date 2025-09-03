@@ -10,7 +10,7 @@ function text_search_index<T>(schema: Schema, options: TextSearchIndexOptions) {
         ACCIONES_MONGOOSE.SAVE,
         async function (
             doc: DocumentType<T>,
-            next: (err?: CallbackError) => void,
+            next: (err?: CallbackError) => void
         ) {
             const MODEL = doc.constructor as ModelType<T>;
             const POPULATED = await MODEL.findOne({ _id: doc._id })
@@ -20,14 +20,14 @@ function text_search_index<T>(schema: Schema, options: TextSearchIndexOptions) {
             try {
                 next();
             } catch {}
-        },
+        }
     );
     schema.post(
         ACCIONES_MONGOOSE.FIND_ONE_AND_UPDATE,
         async function (
             this: mongoose.Query<any, T>,
             result: DocumentType<T>,
-            next: (err?: CallbackError) => void,
+            next: (err?: CallbackError) => void
         ) {
             const query = this.getQuery();
             const doc = await this.model
@@ -38,7 +38,7 @@ function text_search_index<T>(schema: Schema, options: TextSearchIndexOptions) {
             try {
                 next();
             } catch {}
-        },
+        }
     );
     schema.index({ text_search_value: 'text' }, { name: 'text_search_value' });
 }
@@ -64,7 +64,7 @@ export async function create_text_search_field(
     modelo: Model<any>,
     opciones: {
         usarComoFuncion?: boolean;
-    } = {},
+    } = {}
 ) {
     if (opciones?.usarComoFuncion === undefined) {
         opciones.usarComoFuncion = false;
@@ -95,7 +95,7 @@ export async function create_text_search_field(
                     let valor_campo = seleccionarCampoCualquierNivelProfundo(
                         documentoPopulado,
                         un_campo,
-                        '.',
+                        '.'
                     );
                     if (
                         Object.prototype.toString.call(valor_campo) ==
@@ -119,7 +119,7 @@ export async function create_text_search_field(
             } else {
                 await modelo.updateOne(
                     { _id: documento._id },
-                    { text_search_value: busqueda },
+                    { text_search_value: busqueda }
                 );
             }
         }

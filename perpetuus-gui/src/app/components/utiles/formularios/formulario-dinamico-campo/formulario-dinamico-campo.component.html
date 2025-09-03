@@ -1,57 +1,59 @@
-<div [formGroup]="formulario_contenedor" class="form-group">
-	@switch (tipo_campo) {
-		@case ('BS_DROPDOWN') {
-			<p>BS_DROPDOWN</p>
-		}
-		@case ('BS_LISTGROUP') {
-			<p>BS_LISTGROUP</p>
-		}
-		@case ('TEXTAREA') {
-			<p>TEXTAREA</p>
-		}
-		@case ('DATALIST') {
-			<p>DATALIST</p>
-		}
-		@case ('CHECK') {
-			<p>CHECK</p>
-		}
-		@default {
-			<div class="form-floating" required>
-				<input
-					autocorrect="off"
-					autocapitalize="off"
-					(change)="emitir_cambio()"
-					(keyup)="evaluar_higiene()"
-					[class]="clase_campo"
-					[id]="id_campo"
-					[type]="tipo_campo"
-					[formControlName]="llave_campo"
-					[placeholder]="placeholder_campo"
-					[attr.invalid]="campo_invalido"
-				>
-				<label [for]="id_campo">
-					{{ etiqueta_campo }}
-					@if (campo_es_obligatorio) {
-						<span class="text-primary">
-							*
-						</span>
-					}
-				</label>
-			</div>
-		}
-	}
-	<div
-		[collapse]="!campo_invalido"
-		[orientation]="'vertical'"
-		(hidden)="marcar_feedback_oculto()"
-		(starting_to_show)="marcar_feedback_mostrado()"
-	>
-		<div
-			class="invalid-feedback mostrar"
-		>
-			<app-mensajes-error-validacion-formularios
-				[campo]="campo_de_formulario"
-			></app-mensajes-error-validacion-formularios>
-		</div>
-	</div>
+<div
+    [formGroup]="formulario_contenedor"
+    class="form-group"
+>
+    @switch (tipo_campo) {
+        @case ('BS_DROPDOWN') {
+            <p>BS_DROPDOWN</p>
+        }
+        @case ('BS_LISTGROUP') {
+            <p>BS_LISTGROUP</p>
+        }
+        @case ('TEXTAREA') {
+            <p>TEXTAREA</p>
+        }
+        @case ('DATALIST') {
+            <p>DATALIST</p>
+        }
+        @case ('CHECK') {
+            <p>CHECK</p>
+        }
+        @default {
+            <div
+                class="form-floating"
+                required
+            >
+                <input
+                    autocorrect="off"
+                    autocapitalize="off"
+                    (change)="emitir_cambio()"
+                    (keyup)="evaluar_higiene()"
+                    [class]="clase_campo"
+                    [id]="id_campo"
+                    [type]="tipo_campo"
+                    [formControlName]="llave_campo"
+                    [placeholder]="placeholder_campo"
+                    [attr.invalid]="campo_invalido"
+                />
+                <label [for]="id_campo">
+                    {{ etiqueta_campo }}
+                    @if (campo_es_obligatorio) {
+                        <span class="text-primary"> * </span>
+                    }
+                </label>
+            </div>
+        }
+    }
+    <div
+        [collapse]="!campo_invalido"
+        [orientation]="'vertical'"
+        (hidden)="marcar_feedback_oculto()"
+        (starting_to_show)="marcar_feedback_mostrado()"
+    >
+        <div class="invalid-feedback mostrar">
+            <app-mensajes-error-validacion-formularios
+                [campo]="campo_de_formulario"
+            ></app-mensajes-error-validacion-formularios>
+        </div>
+    </div>
 </div>

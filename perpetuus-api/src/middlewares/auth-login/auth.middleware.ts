@@ -4,22 +4,22 @@ import { Resp } from '../../utils/response.utils';
 
 import { USER_MODEL } from '../../componentes/usuario/usuario/usuario.model';
 
-
 function problemas_usuario(res: Response, problemas: string[]) {
-    return new Resp(
-        res, __filename,
-        {
-            mensaje: `Error: ${problemas.join(', ')}`
-        }
-    )._400_badRequest();
+    return new Resp(res, __filename, {
+        mensaje: `Error: ${problemas.join(', ')}`
+    })._400_badRequest();
 }
 
-async function usuario_correo_duplicado (req: Request, res: Response, next: any) {
+async function usuario_correo_duplicado(
+    req: Request,
+    res: Response,
+    next: any
+) {
     try {
         let problemas: string[] = [];
 
         // Usuario
-        let usuario_nombre_usuario = await USER_MODEL.find({ 
+        let usuario_nombre_usuario = await USER_MODEL.find({
             nombre_usuario: req.body.nombre_usuario
         });
         if (usuario_nombre_usuario.length > 0) {
@@ -41,7 +41,7 @@ async function usuario_correo_duplicado (req: Request, res: Response, next: any)
             let usuario_numero_celular = await USER_MODEL.find({
                 $and: [
                     { numero_celular: req.body.numero_celular },
-                    { numero_celular: { $exists: true }}
+                    { numero_celular: { $exists: true } }
                 ]
             });
             if (usuario_numero_celular.length > 0) {
@@ -54,13 +54,10 @@ async function usuario_correo_duplicado (req: Request, res: Response, next: any)
         // Correcto
         next();
     } catch (error) {
-        return new Resp(
-            res, __filename,
-            {
-                mensaje: 'No se pudo validar usuario',
-                error: error,
-            }
-        )._500_internal_server_error();
+        return new Resp(res, __filename, {
+            mensaje: 'No se pudo validar usuario',
+            error: error
+        })._500_internal_server_error();
     }
 }
 

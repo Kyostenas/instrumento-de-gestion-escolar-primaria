@@ -10,7 +10,7 @@ import {
     modelOptions,
     plugin,
     prop,
-    Ref,
+    Ref
 } from '@typegoose/typegoose';
 
 /* UTILIDADES */
@@ -29,26 +29,26 @@ import { User } from '../../componentes/usuario/usuario/usuario.model';
 // (o-----------------------------------------------------------\/-----o)
 
 @plugin(auto_increment<typeof HISTORY_LOG_MODEL>, { field: 'sequence' })
-@Index({user: 1}, {name: 'user'})
-@Index({collection_name: 1}, {name: 'collection_name'})
-@Index({modified_document_id: 1}, {name: 'modified_document_id'})
+@Index({ user: 1 }, { name: 'user' })
+@Index({ collection_name: 1 }, { name: 'collection_name' })
+@Index({ modified_document_id: 1 }, { name: 'modified_document_id' })
 @modelOptions({
     schemaOptions: {
         collection: 'history_log',
-        timestamps: true,
-    },
+        timestamps: true
+    }
 })
 class HistoryLog implements GenericDocument {
     _id?: string | Schema.Types.ObjectId;
 
-    @prop({unique: true})
+    @prop({ unique: true })
     public sequence?: number;
 
     @prop({
         maxlength: [
             250,
-            'El largo máximo para la descripción del movimiento es 250 caracteres',
-        ],
+            'El largo máximo para la descripción del movimiento es 250 caracteres'
+        ]
     })
     public description?: string;
 
@@ -64,12 +64,12 @@ class HistoryLog implements GenericDocument {
     public user?: Ref<User>;
 
     @prop({
-        required: [true, 'Se requiere el nombre de la colección'],
+        required: [true, 'Se requiere el nombre de la colección']
     })
     public collection_name!: string;
 
     @prop({
-        required: [true, 'El id del documento modificado es obligatorio'],
+        required: [true, 'El id del documento modificado es obligatorio']
     })
     public modified_document_id!: string;
 
@@ -78,7 +78,7 @@ class HistoryLog implements GenericDocument {
             values: Object.values(ACCIONES_MONGOOSE),
             message: 'La operación "{VALUE}" no existe'
         },
-        required: [true, 'Se requiere el tipo de operación'],
+        required: [true, 'Se requiere el tipo de operación']
     })
     public operation_type!: string;
 
@@ -86,7 +86,7 @@ class HistoryLog implements GenericDocument {
     public movements: Movement[] = [];
 
     @prop({
-        required: [true, 'Se requiere el delta (los cambios hechos)'],
+        required: [true, 'Se requiere el delta (los cambios hechos)']
     })
     public delta!: any;
 
@@ -96,7 +96,7 @@ class HistoryLog implements GenericDocument {
 
 class Movement {
     @prop({
-        required: [true, 'Se requiere el nombre del campo del movimiento'],
+        required: [true, 'Se requiere el nombre del campo del movimiento']
     })
     public path!: string;
 
@@ -110,8 +110,8 @@ class Movement {
         required: [true, 'El tipo de movimiento es obligatorio'],
         enum: {
             values: ['replace', 'remove', 'add', 'move'],
-            message: 'El tipo de operación "{VALUE}" no existe',
-        },
+            message: 'El tipo de operación "{VALUE}" no existe'
+        }
     })
     public op!: string;
 }

@@ -27,7 +27,7 @@ export const NOMBRES_MESES = {
     9: { largo: 'septiembre', corto: 'sep' },
     10: { largo: 'octubre', corto: 'oct' },
     11: { largo: 'noviembre', corto: 'nov' },
-    12: { largo: 'diciembre', corto: 'dic' },
+    12: { largo: 'diciembre', corto: 'dic' }
 };
 export const NOMBRES_DIAS = {
     1: { largo: 'domingo', corto: 'dom' },
@@ -36,7 +36,7 @@ export const NOMBRES_DIAS = {
     4: { largo: 'miércoles', corto: 'mié' },
     5: { largo: 'jueves', corto: 'jue' },
     6: { largo: 'viernes', corto: 'vie' },
-    7: { largo: 'sábado', corto: 'sáb' },
+    7: { largo: 'sábado', corto: 'sáb' }
 };
 export const ZONA_HORARIO_MEXICO = 'America/Mexico_City';
 export const ZONA_HORARIA_MEXICO_UTC = 'GMT-06:00';
@@ -176,7 +176,7 @@ export const POSICIONES_BS_A_CLASES = {
     middle_right: 'top-50 end-0 translate-middle-y',
     bottom_left: 'bottom-0 start-0',
     bottom_center: 'bottom-0 start-50 translate-middle-x',
-    bottom_right: 'bottom-0 end-0',
+    bottom_right: 'bottom-0 end-0'
 };
 
 // (o-----------------------------------------------------------/\-----o)
@@ -195,7 +195,7 @@ export const REGEX_VALIDACION_CORREO =
 // (o==================================================================o)
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class UtilidadesService {
     constructor() {}
@@ -320,20 +320,20 @@ export class UtilidadesService {
         opciones?: {
             /**
              * Es el valor que retorna cuando el campo no existe.
-             * 
+             *
              * Por defecto `''`.
              */
             reemplazoValorIndefinido?: any;
             /**
              * El valor que retorna cuando hay algun error.
-             * 
+             *
              * Por defecto `undefined`.
              */
             valorError?: any;
             /**
              * Si la funcion retorna un arreglo con sub-arreglos,
              * aplanarlos.
-             * 
+             *
              * Por defecto `true`.
              */
             aplanarSubArreglos?: boolean;
@@ -342,18 +342,18 @@ export class UtilidadesService {
              * arreglos de objetos y se hace referencia a campos en
              * esos objetos, se traera el resultado de ese campo por
              * cada objeto en el arreglo.
-             * 
+             *
              * En cambio, si esta opcion se marca como `true`,
              * se debera referenciar el indice del objeto especifico
              * en el arreglo en el que se debera buscar el campo.
-             * 
+             *
              * Si la ruta del campo era `objeto.arreglo_objetos.campo_objeto`,
              * ahora debera ser `objeto.arreglo_objetos.1.campo_objeto`
              * (el `1` solo es de ejemplo).
-             * 
+             *
              * Por defecto `false`.
              */
-            noRecorrerArreglos?: boolean,
+            noRecorrerArreglos?: boolean;
         }
     ): any {
         if (!opciones) opciones = {};
@@ -511,10 +511,10 @@ export class UtilidadesService {
     }
 
     range(from: number, to: number, step: number = 1) {
-        let formed_range = []
-        for (let i = from; i < to; i+=step) {
-            formed_range.push(i)
+        let formed_range = [];
+        for (let i = from; i < to; i += step) {
+            formed_range.push(i);
         }
-        return formed_range
+        return formed_range;
     }
 }

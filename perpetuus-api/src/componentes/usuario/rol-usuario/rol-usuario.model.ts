@@ -8,14 +8,14 @@ import {
     getModelForClass,
     modelOptions,
     plugin,
-    prop,
+    prop
 } from '@typegoose/typegoose';
 
 /* UTILIDADES */
 import { arreglo_valores_profundos } from '../../../utils/general.utils';
 import {
     PERMISOS_DISPONIBLES,
-    PERMISOS_PERPETUUS,
+    PERMISOS_PERPETUUS
 } from '../../../config/roles/permisos-api.config';
 import { auto_increment } from '../../../plugins/auto-increment/auto-increment.plugin';
 import hystory_log_plugin from '../../../plugins/history/history-log.plugin';
@@ -37,8 +37,8 @@ const TEXT_SEARCH_FIELDS = ['sequence', 'description', 'nombre'];
 @modelOptions({
     schemaOptions: {
         collection: 'roles',
-        timestamps: true,
-    },
+        timestamps: true
+    }
 })
 class Rol implements GenericDocument {
     _id?: string | Schema.Types.ObjectId | undefined;
@@ -60,17 +60,17 @@ class Rol implements GenericDocument {
 
     @prop({
         required: [true, 'Nombre de rol requerido'],
-        unique: true,
+        unique: true
     })
     nombre!: string;
 
     @prop({
         enum: {
             values: arreglo_valores_profundos(PERMISOS_DISPONIBLES),
-            message: 'El permiso: "{value}" no existe',
+            message: 'El permiso: "{value}" no existe'
         },
         type: () => [String],
-        default: [],
+        default: []
     })
     permisos?: PERMISOS_PERPETUUS[];
 }

@@ -5,7 +5,7 @@ import { ControlQueriesUrlService } from '../control-queries-url/control-queries
 import { DeepValues } from 'src/app/utiles/tipos-personalizados';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class StandardRoutingService {
     constructor(
@@ -55,14 +55,17 @@ export class StandardRoutingService {
         this.query_service.limpiar_todo();
         this.fragment_service.clean_fragment();
         setTimeout(() => {
-            const CURRENT_URL = this.router.url.split('?')[0]
+            const CURRENT_URL = this.router.url.split('?')[0];
             this.navigate([CURRENT_URL ?? '', 'form']);
             setTimeout(() => {
-                this.query_service.define_multipe({
-                    form_object_sequence: object_sequence,
-                    form_mode: 'detail',
-                }, true)
+                this.query_service.define_multipe(
+                    {
+                        form_object_sequence: object_sequence,
+                        form_mode: 'detail'
+                    },
+                    true
+                );
             }, 0);
-        })
+        });
     }
 }

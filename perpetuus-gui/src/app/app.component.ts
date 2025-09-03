@@ -6,7 +6,7 @@ import {
     OnDestroy,
     OnInit,
     Renderer2,
-    ViewChild,
+    ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from './services/inicio/signin/auth.service';
@@ -26,15 +26,15 @@ const rutas_exentas = ['/', '/inicio', '/inicio/signin'];
         CommonModule,
         RouterModule,
         ControlNotificacionesComponent,
-        ModalNormalComponent,
+        ModalNormalComponent
     ],
     providers: [
         // Configuraciones de idioma.
         { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: LOCALE_ID, useValue: 'es-MX' },
+        { provide: LOCALE_ID, useValue: 'es-MX' }
     ],
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
     constructor(

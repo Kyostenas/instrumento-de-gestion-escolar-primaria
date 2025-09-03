@@ -7,9 +7,8 @@
 const api_path = process.env.api_path;
 const gui_path = process.env.gui_path;
 
-
 const api = require(`./${api_path}/package.json`).version;
-const gui = require(`./${ gui_path }/package.json`).version;
+const gui = require(`./${gui_path}/package.json`).version;
 
-// The script must be obtain the result from this console.log. 
-console.log( api+'|'+gui);
+// The script must be obtain the result from this console.log.
+console.log(api + '|' + gui);

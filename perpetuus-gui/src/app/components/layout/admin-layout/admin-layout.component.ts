@@ -4,7 +4,7 @@ import {
     computed,
     OnInit,
     Signal,
-    WritableSignal,
+    WritableSignal
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/inicio/signin/auth.service';
@@ -14,7 +14,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { DeteccionViewportService } from 'src/app/services/utiles/estructurales/deteccion-viewport/deteccion-viewport.service';
 import {
     ControlQueriesUrlService,
-    QUERY_PARAMS_GENERAL,
+    QUERY_PARAMS_GENERAL
 } from 'src/app/services/utiles/estructurales/control-queries-url/control-queries-url.service';
 import { CollapsibleElementDirective } from 'src/app/directives/utiles/varios/collapse/collapsible-element.directive';
 
@@ -25,10 +25,10 @@ import { CollapsibleElementDirective } from 'src/app/directives/utiles/varios/co
         RouterModule,
         BarraLateralMenuComponent,
         BarraBreadcrumbsComponent,
-        CollapsibleElementDirective,
+        CollapsibleElementDirective
     ],
     templateUrl: './admin-layout.component.html',
-    styleUrl: './admin-layout.component.scss',
+    styleUrl: './admin-layout.component.scss'
 })
 export class AdminLayoutComponent implements OnInit {
     // (o==================================================================o)
@@ -51,7 +51,7 @@ export class AdminLayoutComponent implements OnInit {
                     this.router.navigate(['inicio/signin']);
                 }
             },
-            error: (error) => this.router.navigate(['inicio/signin']),
+            error: (error) => this.router.navigate(['inicio/signin'])
         });
     }
 
@@ -68,10 +68,11 @@ export class AdminLayoutComponent implements OnInit {
     valid_session!: Signal<boolean | undefined>;
     mostrar_boton_top: boolean = false;
     elemento_scroll!: HTMLElement;
-    using_side_panel: Signal<QUERY_PARAMS_GENERAL['use_side_panel']> =
-        computed(() => {
-            return !!this.url_query_service.query_actual().use_side_panel
-        });
+    using_side_panel: Signal<QUERY_PARAMS_GENERAL['use_side_panel']> = computed(
+        () => {
+            return !!this.url_query_service.query_actual().use_side_panel;
+        }
+    );
 
     // (o-----------------------------------------------------------/\-----o)
     //   #endregion VARIABLES

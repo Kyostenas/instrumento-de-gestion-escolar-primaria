@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
     templateUrl: './formulario-dinamico-detalle.component.html',
     styleUrl: './formulario-dinamico-detalle.component.scss'
 })
-export class FormularioDinamicoDetalleComponent {
-
-}
+export class FormularioDinamicoDetalleComponent {}

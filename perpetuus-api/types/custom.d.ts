@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { Document, QueryOptions} from 'mongoose';
+import { Document, QueryOptions } from 'mongoose';
 
 declare global {
     /**
@@ -31,14 +31,13 @@ declare global {
      * La diferencia es que esto funciona dinamicamente y el tipado
      * es seguro, por lo que si permite el autocompletado.
      */
-    export type DeepKeys<T, tipo_valor> =
-        T extends object
-            ? T[keyof T] extends infer V
-                ? V extends tipo_valor
-                    ? V
-                    : DeepKeys<V, tipo_valor>
-                : never
-            : never;
+    export type DeepKeys<T, tipo_valor> = T extends object
+        ? T[keyof T] extends infer V
+            ? V extends tipo_valor
+                ? V
+                : DeepKeys<V, tipo_valor>
+            : never
+        : never;
 
     export type Pagination = {
         limit: number;
@@ -67,14 +66,14 @@ declare global {
         user_id?: string | Types.ObjectId;
         description: string;
         large_description?: string;
-    }
+    };
 
     export type PathsToPopulate = {
         path: string;
         model?: string;
         select?: string;
         populate?: PathsToPopulate;
-    }
+    };
 }
 
 declare module 'express' {
@@ -112,7 +111,7 @@ declare module 'mongoose' {
             description: string;
             large_description?: string;
         };
-        original_document?: Document
+        original_document?: Document;
     }
     export interface QueryOptions {
         metadata?: {
@@ -126,10 +125,10 @@ declare module 'mongoose' {
         /**
          * A custom field to store the state of a document prior
          * to its modification.
-         * 
+         *
          * To be used with a pre hook to pass information to a post
          * hook.
          */
-        _original_document?: any
+        _original_document?: any;
     }
 }

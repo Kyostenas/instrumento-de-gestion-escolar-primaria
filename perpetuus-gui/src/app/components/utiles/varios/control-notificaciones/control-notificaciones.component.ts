@@ -1,4 +1,13 @@
-import { Component, effect, OnChanges, OnDestroy, OnInit, signal, SimpleChanges, WritableSignal } from '@angular/core';
+import {
+    Component,
+    effect,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    signal,
+    SimpleChanges,
+    WritableSignal
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BootstrapHideAutoDirective } from 'src/app/directives/utiles/varios/bootstrap-hide-auto/bootstrap-hide-auto.directive';
 import { BootstrapShowAutoDirective } from 'src/app/directives/utiles/varios/bootstrap-show-auto/bootstrap-show-auto.directive';
@@ -7,31 +16,24 @@ import { ControlNotificacionesService } from 'src/app/services/utiles/varios/con
 
 @Component({
     selector: 'app-control-notificaciones',
-    imports: [
-        BootstrapShowAutoDirective,
-        BootstrapHideAutoDirective,
-    ],
+    imports: [BootstrapShowAutoDirective, BootstrapHideAutoDirective],
     templateUrl: './control-notificaciones.component.html',
     styleUrl: './control-notificaciones.component.scss'
 })
-export class ControlNotificacionesComponent{
+export class ControlNotificacionesComponent {
+    constructor(public controlNotifs: ControlNotificacionesService) {
+        effect((onCleanup) => {
+            const ESTADO_NOTIFS = this.controlNotifs.estado_notifiaciones();
+            this.notificaciones.update(() => ESTADO_NOTIFS);
+            onCleanup(() => {});
+        });
+    }
 
-  constructor(
-    public controlNotifs: ControlNotificacionesService,
-  ) {
-    effect((onCleanup) => {
-      const ESTADO_NOTIFS = this.controlNotifs.estado_notifiaciones()
-      this.notificaciones.update(() => ESTADO_NOTIFS)
-      onCleanup(() => {
-
-      })
-    })
-  }
-
-  notificaciones: WritableSignal<EspecificacionServicioNotificacion> = signal({
-    alert: [],
-    modal: [],
-    toast: [],
-  })
-
+    notificaciones: WritableSignal<EspecificacionServicioNotificacion> = signal(
+        {
+            alert: [],
+            modal: [],
+            toast: []
+        }
+    );
 }

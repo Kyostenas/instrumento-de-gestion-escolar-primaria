@@ -8,8 +8,7 @@ import { AppComponent } from './app/app.component';
 import { APP_CONFIG } from './app/app.config';
 
 if (environment.production) {
-  enableProdMode();
+    enableProdMode();
 }
 
-bootstrapApplication( AppComponent, APP_CONFIG )
-  .catch( err => console.log(err) );
+bootstrapApplication(AppComponent, APP_CONFIG).catch((err) => console.log(err));

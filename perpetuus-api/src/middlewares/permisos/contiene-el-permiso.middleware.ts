@@ -1,7 +1,7 @@
 import guard from 'express-jwt-permissions';
 guard({
     requestProperty: 'usuarios',
-    permissionsProperty: 'permisos',
+    permissionsProperty: 'permisos'
 });
 
 import { USER_MODEL } from '../../componentes/usuario/usuario/usuario.model';
@@ -35,19 +35,19 @@ export function tiene_permiso(
     // middleware: boolean = true,
     req?: Request,
     res?: Response,
-    next?: any,
+    next?: any
 ) {
     const EXISTE_PERMISO = seleccionarCampoCualquierNivelProfundo(
         PERMISOS_DISPONIBLES,
         permiso,
-        '.',
+        '.'
     );
     if (!EXISTE_PERMISO) throw `No existe el permiso: ${permiso}`;
 
     const comprobacion_permiso = async function (
         req: Request,
         res: Response,
-        next: any,
+        next: any
     ) {
         const ID_ROL = req.usuario?.rol;
         const ID_USUARIO = req.usuario?._id;
@@ -59,26 +59,26 @@ export function tiene_permiso(
             await controlador_auth.cerrar_sesion(
                 req,
                 res,
-                'Se ha forzado el cierre de sesión porque el usuario no tiene un rol asignado',
+                'Se ha forzado el cierre de sesión porque el usuario no tiene un rol asignado'
             );
         }
         const USUARIO = await USER_MODEL.findOne({ _id: ID_USUARIO })
             .select('rol')
-            .populate<{rol: DocumentType<Rol>}>('rol')
-            .lean()
+            .populate<{ rol: DocumentType<Rol> }>('rol')
+            .lean();
         const ROL = USUARIO?.rol;
         if (!USUARIO) {
             await controlador_auth.cerrar_sesion(
                 req,
                 res,
-                'Se ha forzado el cierre de sesión porque no se encuentra el usuario',
+                'Se ha forzado el cierre de sesión porque no se encuentra el usuario'
             );
         }
         if (String(ID_ROL) !== String(ROL?._id)) {
             await controlador_auth.cerrar_sesion(
                 req,
                 res,
-                'Se ha forzado el cierre de sesión porque se detecto un cambio no autorizado del rol del usuario',
+                'Se ha forzado el cierre de sesión porque se detecto un cambio no autorizado del rol del usuario'
             );
         }
         req.usuario.permisos = ROL?.permisos || [];
@@ -87,7 +87,7 @@ export function tiene_permiso(
         // if (middleware) {
         return guard({
             requestProperty: 'usuario',
-            permissionsProperty: 'permisos',
+            permissionsProperty: 'permisos'
         }).check(permiso)(req, res, next);
         // } else {
         //     return req.usuario.permisos.includes(permiso)

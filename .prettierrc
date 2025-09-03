@@ -1,0 +1,17 @@
+{
+    "trailingComma": "none",
+    "semi": true,
+    "tabWidth": 4,
+    "useTabs": false,
+    "singleQuote": true,
+    "htmlWhitespaceSensitivity": "strict",
+    "singleAttributePerLine": true,
+    "overrides": [
+        {
+            "files": "*.html",
+            "options": {
+                "parser": "angular"
+            }
+        }
+    ]
+}

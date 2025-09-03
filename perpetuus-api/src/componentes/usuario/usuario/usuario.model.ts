@@ -10,7 +10,7 @@ import {
     modelOptions,
     plugin,
     prop,
-    Ref,
+    Ref
 } from '@typegoose/typegoose';
 
 /* UTILIDADES */
@@ -37,7 +37,7 @@ const TEXT_SEARCH_FIELDS = [
     'apellidos',
     'nombre_usuario',
     'correo',
-    'numero_celular',
+    'numero_celular'
 ];
 
 @plugin(auto_increment<typeof USER_MODEL>, { field: 'sequence' })
@@ -46,8 +46,8 @@ const TEXT_SEARCH_FIELDS = [
 @modelOptions({
     schemaOptions: {
         collection: 'users',
-        timestamps: true,
-    },
+        timestamps: true
+    }
 })
 class User implements GenericDocument {
     _id?: string | Schema.Types.ObjectId | undefined;
@@ -76,8 +76,8 @@ class User implements GenericDocument {
         minLength: [3, 'El tamaño mínimo del usuario es de 3 caracteres'],
         unique: true,
         options: {
-            uniqueCaseInsensitive: true,
-        },
+            uniqueCaseInsensitive: true
+        }
     })
     public nombre_usuario!: string;
 
@@ -87,9 +87,9 @@ class User implements GenericDocument {
     @prop({
         validate: [validar_correo, 'Correo no válido'],
         options: {
-            uniqueCaseInsensitive: true,
+            uniqueCaseInsensitive: true
         },
-        required: [true, 'Se requiere un correo'],
+        required: [true, 'Se requiere un correo']
     })
     public correo!: string;
 

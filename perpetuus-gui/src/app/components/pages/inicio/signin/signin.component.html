@@ -1,30 +1,30 @@
 <div class="login-section tw-grid tw-grid-cols-1 tw-place-items-center">
     <!-- <div class="d-flex h-100 tw-bg-gray-900/60 tw-align-middle"> -->
-        <app-card
-            card_classes="
+    <app-card
+        card_classes="
                 tw-bg-gray-800/60
                 tw-backdrop-blur-lg
                 tw-w-[350px]
                 tw-self-start
             "
-        >
-            <ng-container body>
-                <div class="mb-3 w-100 text-center">
-                    <span class="h2">Iniciar sesión</span>
-                </div>
-                <app-formulario-dinamico
-                    #app_formulario_dinamico
-                    [validar]="false"
-                    [campos]="datos_formulario"
-                    [icono_boton_submit]="'bi bi-box-arrow-in-right'"
-                    [mensaje_boton_submit]="'Ingresar'"
-                    (valores)="guardar_valores_formulario($event)"
-                    (on_submit)="on_submit()"
-                ></app-formulario-dinamico>
-                <div class="mt-4 w-100 text-center">
-                    <span class="h4">PERPETUUS</span>
-                </div>
-            </ng-container>
-        </app-card>
+    >
+        <ng-container body>
+            <div class="mb-3 w-100 text-center">
+                <span class="h2">Iniciar sesión</span>
+            </div>
+            <app-formulario-dinamico
+                #app_formulario_dinamico
+                [validar]="false"
+                [campos]="datos_formulario"
+                [icono_boton_submit]="'bi bi-box-arrow-in-right'"
+                [mensaje_boton_submit]="'Ingresar'"
+                (valores)="guardar_valores_formulario($event)"
+                (on_submit)="on_submit()"
+            ></app-formulario-dinamico>
+            <div class="mt-4 w-100 text-center">
+                <span class="h4">PERPETUUS</span>
+            </div>
+        </ng-container>
+    </app-card>
     <!-- </div> -->
 </div>

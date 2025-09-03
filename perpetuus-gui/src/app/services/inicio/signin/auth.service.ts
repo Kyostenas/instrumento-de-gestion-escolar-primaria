@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import {
     NOMBRE_CAMPO_ROL_LOCAL_STORAGE,
     NOMBRE_CAMPO_USUARIO_LOCAL_STORAGE,
-    UtilidadesService,
+    UtilidadesService
 } from '../../utiles/varios/utilidades/utilidades.service';
 import {
     DESCRIPCION_MENU,
     UsuarioEnviar,
-    UsuarioRecibir,
+    UsuarioRecibir
 } from 'src/app/models/usuario/usuario.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
@@ -15,7 +15,7 @@ import { RolUsuarioRecibir } from 'src/app/models/usuario/rol-usuario.model';
 import { ControlNotificacionesService } from '../../utiles/varios/control-notificaciones/control-notificaciones.service';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class AuthService {
     constructor(
@@ -30,7 +30,7 @@ export class AuthService {
     private obtener_url(ruta: string[]) {
         const url = this.utilidades.preparar_url_conexion_api([
             this.ruta_base,
-            ...ruta,
+            ...ruta
         ]);
         return url;
     }
@@ -42,7 +42,7 @@ export class AuthService {
                 this.notificaciones.crear_notificacion({
                     tipo: 'toast',
                     modo: 'success',
-                    cuerpo_mensaje: resp.mensaje,
+                    cuerpo_mensaje: resp.mensaje
                 });
             }),
             catchError((err) => {
@@ -50,7 +50,7 @@ export class AuthService {
                     tipo: 'toast',
                     modo: 'danger',
                     cuerpo_mensaje:
-                        '¡Error al registrarse! ' + err.error.mensaje,
+                        '¡Error al registrarse! ' + err.error.mensaje
                 });
                 return throwError(() => new Error(err));
             })
@@ -64,7 +64,7 @@ export class AuthService {
                 this.notificaciones.crear_notificacion({
                     tipo: 'toast',
                     modo: 'success',
-                    cuerpo_mensaje: resp.mensaje,
+                    cuerpo_mensaje: resp.mensaje
                 });
                 return resp.datos as {
                     usuario: UsuarioRecibir;
@@ -76,7 +76,7 @@ export class AuthService {
                     tipo: 'toast',
                     modo: 'danger',
                     cuerpo_mensaje:
-                        '¡Error al iniciar sesión! ' + err.error.mensaje,
+                        '¡Error al iniciar sesión! ' + err.error.mensaje
                 });
                 return throwError(() => new Error(err));
             })
@@ -90,7 +90,7 @@ export class AuthService {
                 this.notificaciones.crear_notificacion({
                     tipo: 'toast',
                     modo: 'success',
-                    cuerpo_mensaje: resp.mensaje,
+                    cuerpo_mensaje: resp.mensaje
                 });
             }),
             catchError((err) => {
@@ -98,7 +98,7 @@ export class AuthService {
                     tipo: 'toast',
                     modo: 'danger',
                     cuerpo_mensaje:
-                        '¡Error al cerrar sesión! ' + err.error.mensaje,
+                        '¡Error al cerrar sesión! ' + err.error.mensaje
                 });
                 return throwError(() => new Error(err));
             })
@@ -112,7 +112,7 @@ export class AuthService {
                 this.notificaciones.crear_notificacion({
                     tipo: 'toast',
                     modo: 'success',
-                    cuerpo_mensaje: resp.mensaje,
+                    cuerpo_mensaje: resp.mensaje
                 });
             }),
             catchError((err) => {
@@ -120,7 +120,7 @@ export class AuthService {
                     tipo: 'toast',
                     modo: 'danger',
                     cuerpo_mensaje:
-                        '¡Error refrescar la sesión! ' + err.error.mensaje,
+                        '¡Error refrescar la sesión! ' + err.error.mensaje
                 });
                 return throwError(() => new Error(err));
             })
@@ -140,7 +140,7 @@ export class AuthService {
                 this.notificaciones.crear_notificacion({
                     tipo: 'toast',
                     modo: 'success',
-                    cuerpo_mensaje: resp.mensaje,
+                    cuerpo_mensaje: resp.mensaje
                 });
                 return resp.datos as boolean;
             }),
@@ -149,7 +149,7 @@ export class AuthService {
                     tipo: 'toast',
                     modo: 'danger',
                     cuerpo_mensaje:
-                        '¡Error validar la sesión! ' + err.error.mensaje,
+                        '¡Error validar la sesión! ' + err.error.mensaje
                 });
                 return throwError(() => new Error(err));
             })

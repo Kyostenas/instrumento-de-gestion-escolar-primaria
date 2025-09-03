@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
     templateUrl: './administracion-parametros.component.html',
     styleUrl: './administracion-parametros.component.scss'
 })
-export class AdministracionParametrosComponent {
-
-}
+export class AdministracionParametrosComponent {}

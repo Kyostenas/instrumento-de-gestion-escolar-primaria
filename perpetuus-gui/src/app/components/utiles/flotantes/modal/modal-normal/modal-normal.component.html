@@ -1,15 +1,15 @@
-<div 
-    class="modal fade" 
+<div
+    class="modal fade"
     [id]="id_modal"
-    tabindex="-1" 
+    tabindex="-1"
     role="dialog"
     [bsmostrar]="se_muestra_modal"
     aria-hidden="true"
-    [attr.data-bs-keyboard]="permitirCerrarFueraDeModal" 
+    [attr.data-bs-keyboard]="permitirCerrarFueraDeModal"
     [attr.data-bs-backdrop]="dataBackdrop"
     (click)="emitirClickCerrarAreaModal()"
 >
-    <div 
+    <div
         class="
             modal-dialog 
             modal-fullscreen-lg-down 
@@ -20,14 +20,13 @@
         (click)="emitir_click_cuadro_dialogo()"
     >
         <div class="modal-content">
-
             <ng-container *ngIf="!ocultarEncabezado">
                 <div class="modal-header">
                     <ng-content select="[encabezado]"></ng-content>
-                    <button 
-                        type="button" 
-                        class="btn-close" 
-                        data-bs-dismiss="modal" 
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
                         aria-label="Close"
                         aria-hidden="true"
                         (click)="emitirClickCerrarBoton()"
@@ -37,7 +36,10 @@
                 </div>
             </ng-container>
 
-            <div class="modal-body" *ngIf="mostrarContenido">
+            <div
+                class="modal-body"
+                *ngIf="mostrarContenido"
+            >
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
@@ -54,7 +56,6 @@
                     <ng-content select="[pie]"></ng-content>
                 </div>
             </ng-container>
-
         </div>
     </div>
 </div>

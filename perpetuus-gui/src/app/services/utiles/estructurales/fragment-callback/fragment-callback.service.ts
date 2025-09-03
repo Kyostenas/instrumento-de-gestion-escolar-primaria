@@ -4,14 +4,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DeepValues } from 'src/app/utiles/tipos-personalizados';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class FragmentCallbackService {
     constructor(
         private router: Router,
-        private route: ActivatedRoute,
+        private route: ActivatedRoute
     ) {
-        this.current_fragment = toSignal(this.route.fragment, {initialValue: undefined})
+        this.current_fragment = toSignal(this.route.fragment, {
+            initialValue: undefined
+        });
     }
 
     private callbacks: {
@@ -20,8 +22,8 @@ export class FragmentCallbackService {
             eliminado_fragmento: () => void;
         };
     } = {};
-     
-    current_fragment!: Signal<string | null | undefined>
+
+    current_fragment!: Signal<string | null | undefined>;
 
     register_callback(
         fragment: DeepValues<typeof this.ALLOWED_FRAGMENTS, string>,
@@ -30,7 +32,7 @@ export class FragmentCallbackService {
     ): void {
         this.callbacks[fragment] = {
             aparicion_fragmento: callback_fragment_aparition,
-            eliminado_fragmento: callback_fragment_deletion,
+            eliminado_fragmento: callback_fragment_deletion
         };
     }
 
@@ -53,7 +55,7 @@ export class FragmentCallbackService {
     clean_fragment(): void {
         this.router.navigate([], {
             queryParamsHandling: 'preserve',
-            fragment: undefined,
+            fragment: undefined
             // replaceUrl: true
         });
         this.execute_deletion_callback();
@@ -69,7 +71,7 @@ export class FragmentCallbackService {
             .then(() => {
                 this.router.navigate([], {
                     queryParamsHandling: 'preserve',
-                    fragment: fragment,
+                    fragment: fragment
                     // replaceUrl: true
                 });
             });
@@ -99,17 +101,17 @@ export class FragmentCallbackService {
         /**
          * DO NOT USE
          */
-        _: '', // necessary
+        _: '' // necessary
     } as const;
 
     private ALLOWED_FRAGMENTS_PRIVATE: { [type: string]: string } = {
         global_search: 'global_search',
         user_profile: 'user_profile',
         user_notifications: 'user_notifications',
-        
+
         /**
          * DO NOT USE
          */
-        _: '', // necessary
+        _: '' // necessary
     };
 }

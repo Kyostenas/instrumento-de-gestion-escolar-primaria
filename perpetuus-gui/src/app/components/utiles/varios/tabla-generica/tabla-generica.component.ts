@@ -12,7 +12,7 @@ import {
     Pipe,
     signal,
     TemplateRef,
-    WritableSignal,
+    WritableSignal
 } from '@angular/core';
 import { BootstrapDropdownDirective } from 'src/app/directives/utiles/varios/bootsrap-dropdown/bootstrap-dropdown.directive';
 import { BootstrapTooltipDirective } from 'src/app/directives/utiles/varios/bootstrap-tooltip/bootstrap-tooltip.directive';
@@ -30,10 +30,10 @@ import { PaginadorGenericoComponent } from '../paginador-generico/paginador-gene
         BootstrapTooltipDirective,
         CommonModule,
         PipeDinamicoPipe,
-        PaginadorGenericoComponent,
+        PaginadorGenericoComponent
     ],
     templateUrl: './tabla-generica.component.html',
-    styleUrl: './tabla-generica.component.scss',
+    styleUrl: './tabla-generica.component.scss'
 })
 export class TablaGenericaComponent implements OnInit, OnDestroy {
     constructor(
@@ -48,7 +48,9 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
             const QUERY_OBTENIDA =
                 this.control_queries.query_actual().pagination;
             if (QUERY_OBTENIDA) {
-                this.ordenes_columnas.update(() => QUERY_OBTENIDA.sorting_fields)
+                this.ordenes_columnas.update(
+                    () => QUERY_OBTENIDA.sorting_fields
+                );
                 this.detallePaginacion.update((value) => QUERY_OBTENIDA);
             }
             this.emisor_paginacion.emit(QUERY_OBTENIDA);
@@ -63,7 +65,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
                 current_page: 1,
                 element_count: 0,
                 page_count: 0,
-                sorting_fields: {},
+                sorting_fields: {}
             };
             this.detallePaginacion.update((value) => QUERY_DEFECTO);
             this.emisor_paginacion.emit(QUERY_DEFECTO);
@@ -92,7 +94,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
 
     datos_tabla: WritableSignal<OPCIONES_TABLA_GENERICA<any>> = signal({
         columns: [],
-        documentos: [],
+        documentos: []
     });
     columnas_computed = computed(() => this.datos_tabla().columns);
     @Input('datos_tabla')
@@ -100,7 +102,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
         this.sobreescribir_valores_por_defecto(datos);
         this.datos_tabla.update((current_value) => ({
             ...current_value,
-            ...datos,
+            ...datos
         }));
     }
     @Input('documentos') documentos: any[] = [];
@@ -116,8 +118,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
         this.viewport.modo_tabla_generica;
     modo_viewport: WritableSignal<'movil' | 'escritorio'> =
         this.viewport.modo_viewport;
-    ordenes_columnas: WritableSignal<Pagination['sorting_fields']> =
-        signal({});
+    ordenes_columnas: WritableSignal<Pagination['sorting_fields']> = signal({});
     // datos_tabla!: OPCIONES_TABLA_GENERICA
     detallePaginacion: WritableSignal<Pagination> = signal({
         from: 0,
@@ -125,7 +126,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
         current_page: 1,
         element_count: 0,
         page_count: 0,
-        sorting_fields: {},
+        sorting_fields: {}
     });
 
     // (o-----------------------------------------------------------/\-----o)
@@ -141,7 +142,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
             value[column_field] = {
                 field: column_field,
                 title: nombre_real,
-                order: -1,
+                order: -1
             };
             return value;
         });
@@ -153,7 +154,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
             value[column_field] = {
                 field: column_field,
                 title: nombre_real,
-                order: 1,
+                order: 1
             };
             return value;
         });
@@ -171,7 +172,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
     emitir_ordenamiento() {
         let paginacion: Pagination = {
             ...this.detallePaginacion(),
-            sorting_fields: this.ordenes_columnas(),
+            sorting_fields: this.ordenes_columnas()
         };
         this.detallePaginacion.update((value) => paginacion);
         this.control_queries.queries.pagination.accion.definir(paginacion);
@@ -181,7 +182,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
     resultado_paginacion_paginador(resultado_paginacion: Pagination) {
         let paginacion: Pagination = {
             ...resultado_paginacion,
-            sorting_fields: this.ordenes_columnas(),
+            sorting_fields: this.ordenes_columnas()
         };
         // this.detallePaginacion.update((value) => paginacion);
         this.control_queries.queries.pagination.accion.definir(paginacion);
@@ -238,11 +239,14 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
     // (o==================================================================o)
     //   #region CLICK
     // (o-----------------------------------------------------------\/-----o)
-    
+
     emmit_click(index: number, document: any) {
-        this.emisor_click_fila.emit({row_index: index, row_document: document})
+        this.emisor_click_fila.emit({
+            row_index: index,
+            row_document: document
+        });
     }
-    
+
     // (o-----------------------------------------------------------/\-----o)
     //   #endregion CLICK
     // (o==================================================================o)

@@ -15,10 +15,17 @@
                 @case (true) {
                     <div class="row g-3">
                         @for (menu of sub_menus; track menu.link) {
-                            <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
-                                <div 
+                            <div
+                                class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2"
+                            >
+                                <div
                                     class="card shadow-hover-md border-hover-primary text-hover-primary scale-hover-sm h-100"
-                                    [routerLink]="['/', breadcrumb_service.url_layout].concat(menu.ruta_completa.split('/'))" 
+                                    [routerLink]="
+                                        [
+                                            '/',
+                                            breadcrumb_service.url_layout
+                                        ].concat(menu.ruta_completa.split('/'))
+                                    "
                                     routerLinkActive="router-link-active"
                                     (click)="se_muestra_panel_de_menus = false"
                                 >
@@ -26,12 +33,14 @@
                                         <div class="vstack gap-0">
                                             <div class="w-100 text-center">
                                                 <span class="h1">
-                                                    <i [class]="menu.simbolo"></i>
+                                                    <i
+                                                        [class]="menu.simbolo"
+                                                    ></i>
                                                 </span>
                                             </div>
                                             <div class="w-100 text-center">
-                                                <h3>{{menu.nombre}}</h3>
-                                                <p>{{menu.descripcion}}</p>
+                                                <h3>{{ menu.nombre }}</h3>
+                                                <p>{{ menu.descripcion }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -43,14 +52,16 @@
                 @case (false) {
                     <div class="row">
                         <div class="col-12">
-                            <h1>Parece que no tienes permiso para acceder a nada relacionado</h1>
+                            <h1
+                                >Parece que no tienes permiso para acceder a
+                                nada relacionado</h1
+                            >
                         </div>
                     </div>
                 }
             }
         </div>
     </div>
-    
 } @else {
     <router-outlet></router-outlet>
 }

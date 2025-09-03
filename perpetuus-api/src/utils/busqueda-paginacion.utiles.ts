@@ -10,7 +10,7 @@ export function obtener_paginacion(request: Request): Pagination {
             limit: 5,
             current_page: 0,
             page_count: 0,
-            element_count: 0,
+            element_count: 0
         };
         return PAGINACION;
     }
@@ -18,13 +18,13 @@ export function obtener_paginacion(request: Request): Pagination {
 
 export function generar_criterios_sort(
     paginacion: Pagination,
-    es_busqueda_texto: boolean,
+    es_busqueda_texto: boolean
 ) {
     const CRITERIOS_SORT: { [type: string]: any } = {};
     const PROJECTION: { [type: string]: any } = {};
 
     for (let [nombre_campo, especificacion] of Object.entries(
-        paginacion.sorting_fields,
+        paginacion.sorting_fields
     )) {
         CRITERIOS_SORT[nombre_campo] = especificacion.order;
     }

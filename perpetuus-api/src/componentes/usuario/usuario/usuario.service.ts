@@ -3,7 +3,7 @@ import {
     CONTRASENA_SUPER_ADMIN_TEMPORAL,
     CORREO_SUPER_ADMIN_TEMPORAL,
     NOMBRE_ROL_SUPER_ADMIN,
-    NOMBRE_USUARIO_SUPER_ADMIN,
+    NOMBRE_USUARIO_SUPER_ADMIN
 } from '../../../utils/constantes.utils';
 import { USER_MODEL, User } from '../usuario/usuario.model';
 import { ROL_MODEL } from '../rol-usuario/rol-usuario.model';
@@ -30,7 +30,7 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
         contrasena,
         correo,
         numero_celular,
-        user_id,
+        user_id
     }: {
         nombres: string;
         apellidos: string;
@@ -50,18 +50,18 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
             nombre_usuario,
             contrasena: contrasena_encriptada,
             correo,
-            numero_celular,
+            numero_celular
         };
         let nuevo_usuario = new (this.getmodel())(usuario_input);
         nuevo_usuario.metadata = {
             user_id,
-            description: 'Usuario creado',
+            description: 'Usuario creado'
         };
         return await nuevo_usuario.save();
     };
     read = async ({
         pagination,
-        term,
+        term
     }: {
         pagination: Pagination;
         term: string;
@@ -79,7 +79,7 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
                 contrasena: 0,
                 rfrsh_tkn_validity: 0,
                 rfrsh_tkn: 0,
-                text_search_value: 0,
+                text_search_value: 0
             },
             paths_to_populate: [
                 {
@@ -92,11 +92,11 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
         return {
             result: RESULT.result,
             total: RESULT.total,
-            pagination: RESULT.pagination,
+            pagination: RESULT.pagination
         };
     };
     read_by_sequence = async ({
-        sequence,
+        sequence
     }: {
         sequence: number;
     }): Promise<User | DocumentType<User, BeAnObject> | null> => {
@@ -110,7 +110,7 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
         apellidos,
         correo,
         numero_celular,
-        user_id,
+        user_id
     }: {
         id: string;
         nombres: string;
@@ -125,20 +125,20 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
                 nombres,
                 apellidos,
                 correo,
-                numero_celular,
+                numero_celular
             },
             {
                 metadata: {
                     user_id,
-                    description: 'usuario modificado',
-                },
-            },
+                    description: 'usuario modificado'
+                }
+            }
         );
         return rol;
     };
     activate = async ({
         sequence,
-        user_id,
+        user_id
     }: {
         sequence: number;
         user_id: string;
@@ -149,16 +149,16 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
             {
                 metadata: {
                     user_id,
-                    description: 'usuario activado',
+                    description: 'usuario activado'
                 },
-                lean: true,
-            },
+                lean: true
+            }
         );
         return await this.read_by_sequence({ sequence });
     };
     deactivate = async ({
         sequence,
-        user_id,
+        user_id
     }: {
         sequence: number;
         user_id: string;
@@ -169,10 +169,10 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
             {
                 metadata: {
                     user_id,
-                    description: 'usuario desactivado',
+                    description: 'usuario desactivado'
                 },
-                lean: true,
-            },
+                lean: true
+            }
         );
         return await this.read_by_sequence({ sequence });
     };
@@ -188,7 +188,7 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
     assign_rol_to_user = async ({
         sequence,
         rol,
-        user_id,
+        user_id
     }: {
         sequence: number;
         rol: string;
@@ -202,16 +202,16 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
                 metadata: {
                     user_id,
                     description: 'rol de usuario modificado',
-                    large_description: `el nuevo rol del usuario es: ${ROL?.nombre}`,
-                },
-            },
+                    large_description: `el nuevo rol del usuario es: ${ROL?.nombre}`
+                }
+            }
         );
         return await this.read_by_sequence({ sequence });
     };
 
     remove_rol_from_user = async ({
         sequence,
-        user_id,
+        user_id
     }: {
         sequence: number;
         user_id?: string;
@@ -222,9 +222,9 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
             {
                 metadata: {
                     user_id,
-                    description: 'rol de usuario removido',
-                },
-            },
+                    description: 'rol de usuario removido'
+                }
+            }
         );
         return await this.read_by_sequence({ sequence });
     };
@@ -233,7 +233,7 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
         User | DocumentType<User, BeAnObject> | null
     > => {
         const rol_super_admin = await ROL_MODEL.findOne({
-            super_admin: true,
+            super_admin: true
         }).lean();
         const no_existe_rol_super_admin = !rol_super_admin;
         if (no_existe_rol_super_admin) {
@@ -241,7 +241,7 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
         }
         const usuario_super_admin = await this.getmodel()
             .findOne({
-                nombre_usuario: NOMBRE_USUARIO_SUPER_ADMIN,
+                nombre_usuario: NOMBRE_USUARIO_SUPER_ADMIN
             })
             .lean();
         console.log(usuario_super_admin);
@@ -255,7 +255,7 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
         const apellido = NOMBRE_USUARIO_SUPER_ADMIN.split(' ')[1];
         const contrasena_encriptada = bcrypt_hashsync(
             CONTRASENA_SUPER_ADMIN_TEMPORAL,
-            12,
+            12
         );
         const usuario_input: User = {
             nombres: nombre,
@@ -263,13 +263,13 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
             nombre_usuario: NOMBRE_USUARIO_SUPER_ADMIN,
             contrasena: contrasena_encriptada,
             correo: CORREO_SUPER_ADMIN_TEMPORAL,
-            rol: new Types.ObjectId(rol_a_usar._id.toString()),
+            rol: new Types.ObjectId(rol_a_usar._id.toString())
         };
         const NEW_USER = new (this.getmodel())(usuario_input);
         NEW_USER.metadata = {
             description: 'Se creó el usuario super administrador',
             large_description:
-                'Este usuario solo se puede crear externamente, por lo que no especifica qué usuario lo creó',
+                'Este usuario solo se puede crear externamente, por lo que no especifica qué usuario lo creó'
         };
         return await NEW_USER.save();
     };

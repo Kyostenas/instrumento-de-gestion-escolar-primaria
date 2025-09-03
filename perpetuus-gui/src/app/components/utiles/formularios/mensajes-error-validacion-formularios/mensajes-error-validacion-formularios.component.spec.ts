@@ -9,10 +9,11 @@ describe('MensajesErrorValidacionFormulariosComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [MensajesErrorValidacionFormulariosComponent]
-        })
-        .compileComponents();
-        
-        fixture = TestBed.createComponent(MensajesErrorValidacionFormulariosComponent);
+        }).compileComponents();
+
+        fixture = TestBed.createComponent(
+            MensajesErrorValidacionFormulariosComponent
+        );
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

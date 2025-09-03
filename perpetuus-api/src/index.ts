@@ -2,7 +2,7 @@
 
 /* LEAVE THIS AS IT IS */
 import MODEL_IMPORTS_BARREL from './model-barrel';
-MODEL_IMPORTS_BARREL
+MODEL_IMPORTS_BARREL;
 
 import 'reflect-metadata';
 import mongoose from 'mongoose';
@@ -10,11 +10,7 @@ mongoose.set('strictQuery', false);
 mongoose.Promise = global.Promise;
 import { syslog as _syslog } from './utils/logs.utils';
 const syslog = _syslog(module);
-import express, {
-    Application,
-    Response,
-    Request,
-} from 'express';
+import express, { Application, Response, Request } from 'express';
 import cors from 'cors';
 import cookie_session from 'cookie-session';
 import cookieParser from 'cookie-parser';
@@ -36,7 +32,7 @@ const opciones_cors = {
     preflightContinue: true,
     credentials: true,
     allowedHeaders:
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
 };
 
 // (o-----------------------------------------( CONFIGURACIONES ))
@@ -72,8 +68,8 @@ app.use(
     cookie_session({
         name: 'perpetuus-session',
         keys: [<string>COOKIE_SECRET],
-        httpOnly: true,
-    }),
+        httpOnly: true
+    })
 );
 
 app.use((req: Request, res: Response, next: any) => {
@@ -105,10 +101,11 @@ app.use('/api', ROUTES_v1());
 
 // (o-----------------------------------------( MANEJO DE ERRORES ))
 
-
 app.all('*', (req: Request, res: Response, next: any) => {
-    const err = new Error(`no existe la ruta (${req.method}) ${req.originalUrl}`)
-    err.cause = 'ruta no encontrada'
+    const err = new Error(
+        `no existe la ruta (${req.method}) ${req.originalUrl}`
+    );
+    err.cause = 'ruta no encontrada';
     next(err);
 });
 
@@ -116,13 +113,13 @@ app.use(function (err: any, req: Request, res: Response, next: any) {
     if (err.cause === 'ruta no encontrada') {
         return new Resp(res, __filename, {
             mensaje: err.message,
-            error: err,
+            error: err
         })._404_not_found();
     }
     if (err.code === 'user_object_not_found') {
         return new Resp(res, __filename, {
             mensaje: `Token no válido.`,
-            error: err,
+            error: err
         })._403_forbidden();
     }
     if (err.code === 'permission_denied') {
@@ -130,13 +127,13 @@ app.use(function (err: any, req: Request, res: Response, next: any) {
             mensaje: `No tienes permiso para `
                 .concat(`acceder al siguiente `)
                 .concat(`contenido: ${req.permiso_denegado}`),
-            error: err,
+            error: err
         })._403_forbidden();
     }
     return new Resp(res, __filename, {
         mensaje: err.message,
         error: err
-    })._500_internal_server_error()
+    })._500_internal_server_error();
 });
 
 // (o-----------------------------------------( CONECCION MONGODB ))
@@ -158,7 +155,7 @@ try {
     });
 } catch (error: any) {
     syslog.error(
-        `Ocurrió un error antes de escuchar en el puerto: ${error.message}`,
+        `Ocurrió un error antes de escuchar en el puerto: ${error.message}`
     );
 }
 

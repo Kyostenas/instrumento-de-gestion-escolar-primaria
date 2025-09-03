@@ -10,36 +10,34 @@ import * as jsondiffpatch from 'jsondiffpatch';
 const JSONDIFFPATCH_INSTANCE = jsondiffpatch.create({
     arrays: {
         detectMove: true,
-        includeValueOnMove: true,
-    },
+        includeValueOnMove: true
+    }
 });
 
 // (o==================================================================o)
 //   #region PLUGIN (INICIO)
 // (o-----------------------------------------------------------\/-----o)
 
-function hystory_log_plugin<T>(
-    schema: Schema<T>,
-) {
+function hystory_log_plugin<T>(schema: Schema<T>) {
     /* Store the state of the document before it's modified */
     schema.pre(
         ACCIONES_MONGOOSE.SAVE,
         async function (
             this: DocumentType<T>,
-            next: (err?: CallbackError) => void,
+            next: (err?: CallbackError) => void
         ) {
             this.original_document = this;
             try {
                 next();
             } catch {}
-        },
+        }
     );
     /* Trigger history log */
     schema.post(
         ACCIONES_MONGOOSE.SAVE,
         async function (
             doc: DocumentType<T>,
-            next: (err?: CallbackError) => void,
+            next: (err?: CallbackError) => void
         ) {
             const metadata = doc.metadata ?? { description: '' };
             generate_history_log(
@@ -48,19 +46,19 @@ function hystory_log_plugin<T>(
                 schema,
                 ACCIONES_MONGOOSE.SAVE,
                 metadata,
-                next,
+                next
             );
             try {
                 next();
             } catch {}
-        },
+        }
     );
     /* Store the state of the document before it's modified */
     schema.pre(
         ACCIONES_MONGOOSE.FIND_ONE_AND_UPDATE,
         async function (
             this: mongoose.Query<any, any>,
-            next: (err?: CallbackError) => void,
+            next: (err?: CallbackError) => void
         ) {
             const ORIGINAL_DOC = await this.model
                 .findOne(this.getFilter())
@@ -69,7 +67,7 @@ function hystory_log_plugin<T>(
             try {
                 next();
             } catch {}
-        },
+        }
     );
 
     /* Trigger history log */
@@ -77,7 +75,7 @@ function hystory_log_plugin<T>(
         ACCIONES_MONGOOSE.FIND_ONE_AND_UPDATE,
         async function (
             this: mongoose.Query<any, any>,
-            next: (err?: CallbackError) => void,
+            next: (err?: CallbackError) => void
         ) {
             const metadata = this.getOptions().metadata ?? { description: '' };
             const query = this.getQuery();
@@ -88,12 +86,12 @@ function hystory_log_plugin<T>(
                 schema,
                 ACCIONES_MONGOOSE.FIND_ONE_AND_UPDATE,
                 metadata,
-                next,
+                next
             );
             try {
                 next();
             } catch {}
-        },
+        }
     );
 }
 
@@ -109,12 +107,9 @@ async function generate_history_log<T>(
     document: DocumentType<T>,
     query: mongoose.Query<any, any> | undefined,
     schema: Schema<T>,
-    operation_type: DeepKeys<
-        typeof ACCIONES_MONGOOSE,
-        string
-    >,
+    operation_type: DeepKeys<typeof ACCIONES_MONGOOSE, string>,
     metadata: DocumentMetadata,
-    next: any,
+    next: any
 ) {
     try {
         const doc = document;
@@ -125,10 +120,8 @@ async function generate_history_log<T>(
         } else {
             previous_doc = JSON.parse(
                 JSON.stringify(
-                    operation_type === 'save'
-                        ? {}
-                        : doc.original_document
-                ),
+                    operation_type === 'save' ? {} : doc.original_document
+                )
             );
         }
         const new_doc = JSON.parse(JSON.stringify(doc));
@@ -142,7 +135,7 @@ async function generate_history_log<T>(
             operation_type,
             description: metadata.description,
             large_description: metadata.large_description,
-            user: new Schema.Types.ObjectId(metadata.user_id),
+            user: new Schema.Types.ObjectId(metadata.user_id)
         });
         await registroHistorial.save();
         try {
@@ -152,8 +145,8 @@ async function generate_history_log<T>(
         try {
             next(
                 new Error(
-                    `No se pudo crear un registro de historial: ${err.message}`,
-                ),
+                    `No se pudo crear un registro de historial: ${err.message}`
+                )
             );
         } catch (_err) {
             syslog.error(`Primero hubo un error: ${err}\nLuego otro: ${err}`);

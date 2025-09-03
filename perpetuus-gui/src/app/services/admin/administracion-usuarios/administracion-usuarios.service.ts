@@ -7,55 +7,54 @@ import { map, catchError, throwError, Observable } from 'rxjs';
 import { Pagination } from 'src/app/utiles/tipos-personalizados';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AdministracionUsuariosService {
+    constructor(
+        private utilidades: UtilidadesService,
+        private http: HttpClient,
+        private notificaciones: ControlNotificacionesService
+    ) {}
 
-  constructor(
-    private utilidades: UtilidadesService,
-    private http: HttpClient,
-    private notificaciones: ControlNotificacionesService,
-  ) { }
+    private ruta_base = 'usuarios';
+    private opciones = { withCredentials: true };
 
-  private ruta_base = 'usuarios';
-  private opciones = {withCredentials: true};
-  
-
-  private obtener_url(ruta?: string[]) {
-    const url = this.utilidades
-      .preparar_url_conexion_api(
-        [this.ruta_base, ...(ruta || [])]
-      );
-    return url;
-  }
-
-  total_usuarios: number = 0
-
-  obtener_usuarios(paginacion?: Pagination): Observable<UsuarioRecibir[]> {
-    let url = this.obtener_url();
-    if (paginacion) {
-      url = url.concat(`?paginacion=${JSON.stringify(paginacion)}`)
+    private obtener_url(ruta?: string[]) {
+        const url = this.utilidades.preparar_url_conexion_api([
+            this.ruta_base,
+            ...(ruta || [])
+        ]);
+        return url;
     }
-    return this.http.get(url, this.opciones).pipe(
-      map((resp: any) => {
-        this.notificaciones.crear_notificacion({
-          tipo: 'toast',
-          modo: 'success',
-          titulo: 'Correcto',
-          cuerpo_mensaje: resp.mensaje
-        });
-        return resp.datos.map((usuario: any) => new UsuarioRecibir(usuario))
-      }),
-      catchError(err => {
-        this.notificaciones.crear_notificacion({
-          tipo: 'toast',
-          modo: 'danger',
-          titulo: '¡Error al obtener los usuarios!',
-          cuerpo_mensaje: err.error.mensaje
-        });
-        return throwError(() => new Error(err))
-      })
-    );
-  }
 
+    total_usuarios: number = 0;
+
+    obtener_usuarios(paginacion?: Pagination): Observable<UsuarioRecibir[]> {
+        let url = this.obtener_url();
+        if (paginacion) {
+            url = url.concat(`?paginacion=${JSON.stringify(paginacion)}`);
+        }
+        return this.http.get(url, this.opciones).pipe(
+            map((resp: any) => {
+                this.notificaciones.crear_notificacion({
+                    tipo: 'toast',
+                    modo: 'success',
+                    titulo: 'Correcto',
+                    cuerpo_mensaje: resp.mensaje
+                });
+                return resp.datos.map(
+                    (usuario: any) => new UsuarioRecibir(usuario)
+                );
+            }),
+            catchError((err) => {
+                this.notificaciones.crear_notificacion({
+                    tipo: 'toast',
+                    modo: 'danger',
+                    titulo: '¡Error al obtener los usuarios!',
+                    cuerpo_mensaje: err.error.mensaje
+                });
+                return throwError(() => new Error(err));
+            })
+        );
+    }
 }

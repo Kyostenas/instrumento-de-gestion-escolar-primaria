@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
     templateUrl: './barra-inferior.component.html',
     styleUrl: './barra-inferior.component.scss'
 })
-export class BarraInferiorComponent {
-
-}
+export class BarraInferiorComponent {}

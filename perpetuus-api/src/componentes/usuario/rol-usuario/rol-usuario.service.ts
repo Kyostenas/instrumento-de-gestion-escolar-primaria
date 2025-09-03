@@ -16,7 +16,7 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
     create = async ({
         nombre,
         descripcion,
-        user_id,
+        user_id
     }: {
         nombre: string;
         descripcion: string;
@@ -26,39 +26,37 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
         const ROL_NUEVO = new (this.getmodel())(rol_input);
         ROL_NUEVO.metadata = {
             user_id,
-            description: 'rol creado',
+            description: 'rol creado'
         };
         return await ROL_NUEVO.save();
     };
 
     read = async ({
         pagination,
-        term,
+        term
     }: {
         pagination: Pagination;
-        term: string,
+        term: string;
     }): Promise<{
         result: DocumentType<Rol, BeAnObject>[] | Rol[];
         total: number;
         pagination: Pagination;
     }> => {
-        const DB_READING_SERVICE = new DBReadingService(
-            {
-                pagination,
-                model: this.getmodel(),
-                term
-            }
-        )
-        const RESULT = await DB_READING_SERVICE.smart_read()
+        const DB_READING_SERVICE = new DBReadingService({
+            pagination,
+            model: this.getmodel(),
+            term
+        });
+        const RESULT = await DB_READING_SERVICE.smart_read();
         return {
             result: RESULT.result,
             total: RESULT.total,
-            pagination: RESULT.pagination,
+            pagination: RESULT.pagination
         };
     };
 
     read_by_sequence = async ({
-        sequence,
+        sequence
     }: {
         sequence: number;
     }): Promise<DocumentType<Rol, BeAnObject> | Rol | null> => {
@@ -71,7 +69,7 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
         sequence,
         nombre,
         descripcion,
-        user_id,
+        user_id
     }: {
         sequence: number;
         nombre: string;
@@ -84,16 +82,16 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
             {
                 metadata: {
                     user_id,
-                    description: 'rol modificado',
+                    description: 'rol modificado'
                 },
-                lean: true,
-            },
+                lean: true
+            }
         );
         return await this.read_by_sequence({ sequence });
     };
     activate = async ({
         sequence,
-        user_id,
+        user_id
     }: {
         sequence: number;
         user_id: string;
@@ -104,16 +102,16 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
             {
                 metadata: {
                     user_id,
-                    description: 'rol activado',
+                    description: 'rol activado'
                 },
-                lean: true,
-            },
+                lean: true
+            }
         );
         return await this.read_by_sequence({ sequence });
     };
     deactivate = async ({
         sequence,
-        user_id,
+        user_id
     }: {
         sequence: number;
         user_id: string;
@@ -124,10 +122,10 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
             {
                 metadata: {
                     user_id,
-                    description: 'Rol desactivado',
+                    description: 'Rol desactivado'
                 },
-                lean: true,
-            },
+                lean: true
+            }
         );
         return await this.read_by_sequence({ sequence });
     };
@@ -143,7 +141,7 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
     crear_permisos_en_rol = async ({
         permissions,
         rol,
-        user_id,
+        user_id
     }: {
         permissions: string[];
         rol: Rol;
@@ -160,7 +158,7 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
         let nombres_existentes: String[] = [];
         if (permisos_existentes) {
             nombres_existentes = permisos_existentes.map(
-                (un_perm: any) => un_perm,
+                (un_perm: any) => un_perm
             );
         }
         for (let i_perm = 0; i_perm < permissions.length; i_perm++) {
@@ -179,20 +177,20 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
         if (creados > 0) {
             let permisos_totales = [
                 ...(rol.permisos ? rol.permisos : []),
-                ...permisos_para_agregar,
+                ...permisos_para_agregar
             ];
             await this.getmodel().findOneAndUpdate(
                 { _id: rol._id },
                 {
-                    permisos: permisos_totales,
+                    permisos: permisos_totales
                 },
                 {
                     metadata: {
                         user_id,
                         description: 'permisos agregados a rol',
-                        large_description: `Se agregaron los permisos:\n${permisos_para_agregar.join('\n')}`,
-                    },
-                },
+                        large_description: `Se agregaron los permisos:\n${permisos_para_agregar.join('\n')}`
+                    }
+                }
             );
         }
         let advertencias!: string[];
@@ -203,14 +201,14 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
         }
         return {
             mensaje_res: `${creados} Permisos creados. ${existentes} Ya existen.`,
-            advertencias,
+            advertencias
         };
     };
 
     eliminar_permisos_en_rol = async (
         permisos_a_eliminar: string[],
         rol: Rol,
-        user_id?: string,
+        user_id?: string
     ): Promise<{
         mensaje_res: string;
         advertencias: string[] | undefined;
@@ -223,7 +221,7 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
         if (permisos_existentes) {
             let permisos_para_conservar = permisos_existentes;
             nombres_existentes = permisos_existentes.map(
-                (un_perm: any) => un_perm,
+                (un_perm: any) => un_perm
             );
             conservados = nombres_existentes.length;
             for (
@@ -236,11 +234,11 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
                     conservados -= 1;
                     eliminados += 1;
                     permisos_para_conservar.filter(
-                        (permiso: any) => permiso !== un_permiso_a_eliminar,
+                        (permiso: any) => permiso !== un_permiso_a_eliminar
                     );
                 } else {
                     let advertencia = this.mensaje_permiso_no_existe(
-                        un_permiso_a_eliminar,
+                        un_permiso_a_eliminar
                     );
                     syslog.warning(advertencia);
                     advertencia_pedazos.push(advertencia);
@@ -251,15 +249,15 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
                 this.getmodel().findOneAndUpdate(
                     { _id: rol._id },
                     {
-                        permisos: permisos_totales,
+                        permisos: permisos_totales
                     },
                     {
                         metadata: {
                             user_id,
                             description: 'permisos eliminados del rol',
-                            large_description: `Se eliminaron los permisos:\n${permisos_a_eliminar.join('\n')}`,
-                        },
-                    },
+                            large_description: `Se eliminaron los permisos:\n${permisos_a_eliminar.join('\n')}`
+                        }
+                    }
                 );
             }
         }
@@ -271,7 +269,7 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
         }
         return {
             mensaje_res: `${eliminados} Permisos eliminados. ${conservados} Se conservaron.`,
-            advertencias,
+            advertencias
         };
     };
 
@@ -286,14 +284,14 @@ export class RolService extends CRUD_Service<typeof ROL_MODEL, Rol> {
             nombre: NOMBRE_ROL_SUPER_ADMIN,
             super_admin: true,
             description: 'Este rol tiene accDNeso a todas las rutas'.concat(
-                ' con sus capacidades y sub-capacidades.',
-            ),
+                ' con sus capacidades y sub-capacidades.'
+            )
         };
         const NUEVO_ROL = new (this.getmodel())(rol_input);
         NUEVO_ROL.metadata = {
             description: 'rol de super administrador creado',
             large_description:
-                'este rol solo se puede crear con una ruta que no valida usuario, por lo que no se registra que usuario lo crea',
+                'este rol solo se puede crear con una ruta que no valida usuario, por lo que no se registra que usuario lo crea'
         };
         return await NUEVO_ROL.save();
     };

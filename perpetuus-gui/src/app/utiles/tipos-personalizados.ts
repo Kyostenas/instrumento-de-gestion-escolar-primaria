@@ -64,19 +64,21 @@ export type DeepValues<T, tipo_valor> = T extends object
  * La diferencia es que esto funciona dinamicamente y el tipado
  * es seguro, por lo que si permite el autocompletado.
  */
-export type DeepKeys<OBJECT> = OBJECT extends any[] 
+export type DeepKeys<OBJECT> = OBJECT extends any[]
     ? never
     : OBJECT extends object
-    ? {
-        [KEY in keyof OBJECT]: KEY extends string
-            ? OBJECT[KEY] extends (...args: any[]) => any
-                ? never
-                : Exclude<OBJECT[KEY], undefined> extends object
-                ? `${KEY}` | `${KEY}.${DeepKeys<Exclude<OBJECT[KEY], undefined>>}`
-                : `${KEY}`
-            : never;
-    }[keyof OBJECT]
-    : never;
+      ? {
+            [KEY in keyof OBJECT]: KEY extends string
+                ? OBJECT[KEY] extends (...args: any[]) => any
+                    ? never
+                    : Exclude<OBJECT[KEY], undefined> extends object
+                      ?
+                            | `${KEY}`
+                            | `${KEY}.${DeepKeys<Exclude<OBJECT[KEY], undefined>>}`
+                      : `${KEY}`
+                : never;
+        }[keyof OBJECT]
+      : never;
 
 export type Pagination = {
     limit: number;

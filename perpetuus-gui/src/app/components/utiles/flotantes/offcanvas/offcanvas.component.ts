@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
     templateUrl: './offcanvas.component.html',
     styleUrl: './offcanvas.component.scss'
 })
-export class OffcanvasComponent {
-
-}
+export class OffcanvasComponent {}

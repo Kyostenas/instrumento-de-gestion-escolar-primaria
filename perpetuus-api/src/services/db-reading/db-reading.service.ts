@@ -1,7 +1,7 @@
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import {
     generar_criterios_sort,
-    obtener_paginacion,
+    obtener_paginacion
 } from '../../utils/busqueda-paginacion.utiles';
 import { Request } from 'express';
 
@@ -21,7 +21,7 @@ export default class DBReadingService<T> {
         filters,
         filters_function,
         projection,
-        paths_to_populate,
+        paths_to_populate
     }: {
         pagination: Pagination;
         model: ModelType<T>;
@@ -42,7 +42,7 @@ export default class DBReadingService<T> {
 
     private generate_text_search_query({
         text_search_term,
-        regex_term,
+        regex_term
     }: {
         text_search_term?: string;
         regex_term?: string;
@@ -50,7 +50,7 @@ export default class DBReadingService<T> {
         let query: { [type: string]: any } = {};
         if (!!text_search_term) {
             query.$text = {
-                $search: `${text_search_term} "${text_search_term}"`,
+                $search: `${text_search_term} "${text_search_term}"`
             };
         } else if (!!regex_term) {
             query.text_search_value = { $regex: regex_term, $options: 'i' };
@@ -60,7 +60,7 @@ export default class DBReadingService<T> {
 
     async smart_read() {
         let term_object: { [type: string]: any } = {
-            text_search_term: this.term,
+            text_search_term: this.term
         };
         let query = this.generate_text_search_query(term_object);
         let total = await this.model.countDocuments(query);
@@ -73,7 +73,7 @@ export default class DBReadingService<T> {
         const IS_TEXT_SEARCH = !!query.$text;
         const SORT_AND_SEARCH_CRITERIA = generar_criterios_sort(
             this.pagination,
-            IS_TEXT_SEARCH,
+            IS_TEXT_SEARCH
         );
         const PROEJECTION = IS_TEXT_SEARCH
             ? { ...SORT_AND_SEARCH_CRITERIA.PROJECTION, ...this.projection }
@@ -81,9 +81,7 @@ export default class DBReadingService<T> {
         this.pagination.current_page =
             Math.floor(this.pagination.from / this.pagination.limit) + 1;
         // this.pagination.pagina_actual = this.pagination.desde / this.pagination.limite
-        this.pagination.page_count = Math.ceil(
-            total / this.pagination.limit,
-        );
+        this.pagination.page_count = Math.ceil(total / this.pagination.limit);
         this.pagination.element_count = total;
         const RESULT = await this.model
             .find(query, PROEJECTION)
