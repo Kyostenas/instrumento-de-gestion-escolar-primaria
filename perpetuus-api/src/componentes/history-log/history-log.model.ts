@@ -14,7 +14,7 @@ import {
 } from '@typegoose/typegoose';
 
 /* UTILIDADES */
-import { auto_increment } from '../auto-increment/auto-increment.plugin';
+import { auto_increment } from '../../plugins/auto-increment/auto-increment.plugin';
 import { ACCIONES_MONGOOSE } from '../../utils/constantes.utils';
 
 /* OTROS MODELOS */
@@ -105,6 +105,9 @@ class Movement {
 
     @prop({ required: [true, 'No se puede crear un movimiento sin su valor'] })
     public value: any;
+
+    @prop()
+    public previous_value: any;
 
     @prop({
         required: [true, 'El tipo de movimiento es obligatorio'],

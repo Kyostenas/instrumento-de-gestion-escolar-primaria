@@ -49,18 +49,26 @@ app.use(express.urlencoded({ extended: true }));
 
 // REQUEST LOGS
 app.use((req: Request, res: Response, next: any) => {
-    let req_any = <any>req;
-    let usuario = req_any?.usuario?.nombre_usuario;
-
-    // Cuando es login, aun no hay objeto usuario en el req
-    if (!usuario) {
-        usuario = req.body.nombre_usuario;
-    }
-    if (!usuario) {
-        syslog._Request(req.method, req.url);
+    let body = JSON.stringify(req.body, undefined, 2).split('\n')
+    let formed_body: string
+    if (body.length > 150) {
+        formed_body = body.slice(0, 149).join('\n').concat('\n. . .\n')
     } else {
-        syslog._Request(req.method, `{${usuario}} ${req.url}`);
+        formed_body = body.join('\n')
     }
+
+    syslog._Request(
+        req.method,
+        `------------------------------------------------------------------\n` +
+            `[USUARIO   ] ${req.usuario?.nombre || req.body?.nombre_usuario}\n` +
+            `[URL       ] ${req.originalUrl}\n` +
+            `[USER_AGENT] ${req.get('User-Agent')}\n` +
+            `[BODY      ] ${formed_body}\n` +
+            `[QUERY     ] ${JSON.stringify(req.query, undefined, 2)}\n` +
+            `[PARAMS    ] ${JSON.stringify(req.params, undefined, 2)}\n` +
+        `------------------------------------------------------------------`
+
+    )
     next();
 });
 
@@ -86,7 +94,7 @@ app.get('/api', async (req: Request, res: Response): Promise<Response> => {
 // RUTAS DE INICIO DE SESION, CREACION DE TOKEN
 // Y TOKEN DE REFRESCADO.
 // Deben ir antes de la verificacion del token.
-app.use('/api/auth', RUTA_AUTH());
+app.use('/api/v1/auth', RUTA_AUTH());
 
 // VERIFICACION DE TOKEN
 // Debe ir despues de la ruta auth, porque esa no
@@ -97,7 +105,7 @@ app.use((req: Request, res: Response, next: any) => {
 });
 
 // MARK: RUTAS APLICACION
-app.use('/api', ROUTES_v1());
+app.use('/api/v1', ROUTES_v1());
 
 // (o-----------------------------------------( MANEJO DE ERRORES ))
 

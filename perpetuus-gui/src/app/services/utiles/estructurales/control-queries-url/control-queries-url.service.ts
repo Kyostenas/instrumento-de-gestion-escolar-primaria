@@ -1,6 +1,5 @@
 import { computed, effect, Injectable, OnInit, Signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pagination } from 'src/app/utiles/tipos-personalizados';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 /**
@@ -11,10 +10,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     providedIn: 'root'
 })
 export class ControlQueriesUrlService {
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute
-    ) {
+    constructor(private router: Router, private route: ActivatedRoute) {
         this.query_string = toSignal(this.route.queryParams, {
             initialValue: {}
         }) as Signal<QUERY_PARAMS_GENERAL | undefined>;
@@ -64,7 +60,7 @@ export class ControlQueriesUrlService {
             ),
         filters: <T>() => this.preparar_query<T>('filters'),
         form_object_sequence: this.preparar_query<
-            QUERY_PARAMS_GENERAL['form_object_sequence']
+            QUERY_PARAMS_GENERAL['object_id']
         >('form_object_sequence'),
         form_mode:
             this.preparar_query<QUERY_PARAMS_GENERAL['form_mode']>('form_mode'),
@@ -127,7 +123,7 @@ export interface QUERY_PARAMS_GENERAL {
     filters?: any;
     global_search?: string;
     term_search?: string;
-    form_object_sequence?: number;
+    object_id?: string;
     form_mode?: 'detail' | 'edit' | 'create';
     use_side_panel?: boolean;
 }

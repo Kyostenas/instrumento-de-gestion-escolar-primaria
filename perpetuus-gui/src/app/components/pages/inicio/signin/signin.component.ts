@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormularioDinamicoComponent } from 'src/app/components/utiles/formularios/formulario-dinamico/formulario-dinamico.component';
 import { CardComponent } from 'src/app/components/utiles/card/card/card.component';
-import { UsuarioRecibir } from 'src/app/models/usuario/usuario.model';
 import {
     CampoBaseFormularioDinamico,
     CampoFormulario
@@ -17,10 +15,7 @@ import { AuthService } from 'src/app/services/inicio/signin/auth.service';
     styleUrl: './signin.component.scss'
 })
 export class SigninComponent implements OnInit {
-    constructor(
-        private auth_service: AuthService,
-        private router: Router
-    ) {}
+    constructor(private auth_service: AuthService, private router: Router) {}
 
     ngOnInit(): void {
         this.auth_service.validar_sesion().subscribe((sesion_es_valida) => {

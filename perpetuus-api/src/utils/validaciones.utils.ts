@@ -1,4 +1,5 @@
 import { REGEX_VALIDACION_CORREO } from './constantes.utils';
+import { seleccionarCampoCualquierNivelProfundo } from './general.utils';
 
 export function validar_existencia_de_campos(
     campos: string[],
@@ -12,7 +13,15 @@ export function validar_existencia_de_campos(
     for (let i_campo = 0; i_campo < campos.length; i_campo++) {
         const un_campo = campos[i_campo];
         try {
-            let encontrado = objeto[un_campo];
+            let encontrado = seleccionarCampoCualquierNivelProfundo(
+                objeto,
+                un_campo,
+                '.',
+                {
+                    reemplazoValorIndefinido: undefined,
+                    valorError: undefined
+                }
+            );
             if (!encontrado) {
                 campos_no_encontrados.push(un_campo);
                 todos_correctos = false;

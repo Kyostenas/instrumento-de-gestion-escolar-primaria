@@ -17,6 +17,7 @@ import {
     QUERY_PARAMS_GENERAL
 } from 'src/app/services/utiles/estructurales/control-queries-url/control-queries-url.service';
 import { CollapsibleElementDirective } from 'src/app/directives/utiles/varios/collapse/collapsible-element.directive';
+import { SidebarControlService } from 'src/app/services/utiles/estructurales/sidebar-control/sidebar-control.service';
 
 @Component({
     selector: 'app-admin-layout',
@@ -39,7 +40,8 @@ export class AdminLayoutComponent implements OnInit {
         private auth_service: AuthService,
         private router: Router,
         private viewport_service: DeteccionViewportService,
-        private url_query_service: ControlQueriesUrlService
+        private url_query_service: ControlQueriesUrlService,
+        public sidebar_service: SidebarControlService,
     ) {
         this.valid_session = toSignal(this.auth_service.validar_sesion());
     }

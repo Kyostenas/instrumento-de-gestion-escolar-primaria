@@ -20,7 +20,6 @@ import { PipeDinamicoPipe } from 'src/app/pipes/utiles/pipe-dinamico/pipe-dinami
 import { ControlQueriesUrlService } from 'src/app/services/utiles/estructurales/control-queries-url/control-queries-url.service';
 import { DeteccionViewportService } from 'src/app/services/utiles/estructurales/deteccion-viewport/deteccion-viewport.service';
 import { UtilidadesService } from 'src/app/services/utiles/varios/utilidades/utilidades.service';
-import { DeepKeys, Pagination } from 'src/app/utiles/tipos-personalizados';
 import { PaginadorGenericoComponent } from '../paginador-generico/paginador-generico.component';
 
 @Component({

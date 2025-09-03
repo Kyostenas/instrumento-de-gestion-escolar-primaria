@@ -195,7 +195,7 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
         user_id?: string;
     }): Promise<User | DocumentType<User, BeAnObject> | null> => {
         const ROL = await ROL_MODEL.findOne({ sequence }).lean();
-        this.getmodel().findOneAndUpdate(
+        return await this.getmodel().findOneAndUpdate(
             { _id: sequence },
             { $set: { rol } },
             {
@@ -203,10 +203,10 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
                     user_id,
                     description: 'rol de usuario modificado',
                     large_description: `el nuevo rol del usuario es: ${ROL?.nombre}`
-                }
+                },
+                new: true
             }
         );
-        return await this.read_by_sequence({ sequence });
     };
 
     remove_rol_from_user = async ({
@@ -216,17 +216,17 @@ export class UserService extends CRUD_Service<typeof USER_MODEL, User> {
         sequence: number;
         user_id?: string;
     }): Promise<User | DocumentType<User, BeAnObject> | null> => {
-        this.getmodel().findOneAndUpdate(
+        return await this.getmodel().findOneAndUpdate(
             { sequence },
             { $unset: { rol: true } },
             {
                 metadata: {
                     user_id,
                     description: 'rol de usuario removido'
-                }
+                },
+                new: true
             }
         );
-        return await this.read_by_sequence({ sequence });
     };
 
     create_super_admin = async (): Promise<

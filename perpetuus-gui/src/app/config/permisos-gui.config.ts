@@ -1,5 +1,3 @@
-import { DeepValues } from '../utiles/tipos-personalizados';
-
 export const PERMISOS_DISPONIBLES = {
     SUPER_ADMIN: 'SUPER_ADMIN',
     MENU: {

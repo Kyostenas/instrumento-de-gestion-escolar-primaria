@@ -74,67 +74,69 @@ import {
     SHOW_REQ_LOGS,
     SHOW_SYS_REGS
 } from '../config/env/env.config';
+import fs from 'fs';
+import os from 'os';
 
 const TAM_PRED_CONSOLA = 90;
 // const TAM_CONSOLA: number = (process.stdout.columns ?? TAM_PRED_CONSOLA)
 const TAM_MINIMO_CONTENIDO = 40;
 const TIPOS_LOG: tipos_log = {
     error: {
-        texto: 'E',
+        texto: 'ERROR  ',
         color_texto: fore.bold_white,
         color_atras: back._red,
         color_extra: fore.strong_red
     },
     peligro: {
-        texto: 'X',
+        texto: 'DANGER ',
         color_texto: fore._yellow + fore.sub_yellow,
         color_atras: back._red,
         color_extra: fore._red
     },
     advertencia: {
-        texto: '!',
+        texto: 'WARN   ',
         color_texto: fore._black,
         color_atras: back._yellow,
         color_extra: fore.strong_yellow
     },
     info: {
-        texto: 'i',
+        texto: 'INFO   ',
         color_texto: fore._white,
         color_atras: back._blue,
         color_extra: fore.strong_blue
     },
     notice: {
-        texto: 'N',
+        texto: 'NOTICE ',
         color_texto: fore._white + fore.sub_white,
         color_atras: back._purple,
         color_extra: fore.strong_purple
     },
     success: {
-        texto: 'S',
+        texto: 'SUCCESS',
         color_texto: fore._black,
         color_atras: back._green,
         color_extra: fore._green
     },
     ok: {
-        texto: 'K',
+        texto: 'OK     ',
         color_texto: fore._green,
         color_atras: back._black,
         color_extra: fore._green
     },
     log: {
-        texto: 'L',
+        texto: 'LOG    ',
         color_texto: fore._black,
         color_atras: back._white,
         color_extra: fore._white
     },
     debug: {
-        texto: 'D',
+        texto: 'DEBUG  ',
         color_texto: fore._red,
         color_atras: back._white,
         color_extra: fore._white
     },
     request: {
-        texto: 'R',
+        texto: 'REQUEST',
         color_texto: fore._black,
         color_atras: back._cyan,
         color_extra: fore.strong_cyan
@@ -358,6 +360,7 @@ function imprimir(estructura: linea_log) {
     estructura.contenido.partes_seccion?.map((una_parte) => {
         let parte_color = `${estructura.contenido.color_contenido}${una_parte}${reset}`;
         console.log(partes_posteriores_formadas + parte_color);
+        save_log_on_file(partes_posteriores_formadas + parte_color);
     });
 }
 
@@ -377,7 +380,18 @@ async function print_debug_log(estructura: linea_log) {
     if (DEBUG_LOGS) imprimir(estructura);
 }
 
-async function save_log_on_file() {}
+const LOG_PATH = path.join(
+    os.tmpdir(),
+    'perpetuus',
+    'logs',
+    'request_logs.txt'
+);
+fs.mkdirSync(path.dirname(LOG_PATH), { recursive: true });
+const LOG_STREAM = fs.createWriteStream(LOG_PATH, { flags: 'a' });
+async function save_log_on_file(texto: string) {
+    const CLEANSED_TEXT = limpiar_codigos_ansi(texto);
+    LOG_STREAM.write(CLEANSED_TEXT.nueva_cadena + '\n');
+}
 
 function formatear_contenido(...contenido: any) {
     return contenido
@@ -462,3 +476,8 @@ export const syslog = (modulo: Module) => {
     };
     return funciones;
 };
+
+process.on('SIGINT', () => {
+    LOG_STREAM.end();
+    process.exit();
+});

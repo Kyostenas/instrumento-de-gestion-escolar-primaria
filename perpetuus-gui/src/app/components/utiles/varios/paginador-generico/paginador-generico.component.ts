@@ -9,7 +9,6 @@ import {
     WritableSignal
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Pagination } from 'src/app/utiles/tipos-personalizados';
 
 @Component({
     selector: 'app-paginador-generico',

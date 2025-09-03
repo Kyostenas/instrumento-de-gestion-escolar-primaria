@@ -1,12 +1,20 @@
 import { DocumentType } from '@typegoose/typegoose';
 import { Schema } from 'mongoose';
 import mongoose, { CallbackError } from 'mongoose';
-import { HISTORY_LOG_MODEL } from './history-log.model';
+import { HISTORY_LOG_MODEL } from '../../componentes/history-log/history-log.model';
 import { ACCIONES_MONGOOSE } from '../../utils/constantes.utils';
 import { syslog as _syslog } from '../../utils/logs.utils';
 const syslog = _syslog(module);
 import jsonpatch from 'jsondiffpatch/formatters/jsonpatch';
 import * as jsondiffpatch from 'jsondiffpatch';
+import {
+    ReplaceOp,
+    Op,
+    MoveOp,
+    AddOp,
+    RemoveOp
+} from 'jsondiffpatch/formatters/jsonpatch';
+import { seleccionarCampoCualquierNivelProfundo } from '../../utils/general.utils';
 const JSONDIFFPATCH_INSTANCE = jsondiffpatch.create({
     arrays: {
         detectMove: true,
@@ -26,7 +34,7 @@ function hystory_log_plugin<T>(schema: Schema<T>) {
             this: DocumentType<T>,
             next: (err?: CallbackError) => void
         ) {
-            this.original_document = this;
+            this._original_document = this;
             try {
                 next();
             } catch {}
@@ -107,7 +115,7 @@ async function generate_history_log<T>(
     document: DocumentType<T>,
     query: mongoose.Query<any, any> | undefined,
     schema: Schema<T>,
-    operation_type: DeepKeys<typeof ACCIONES_MONGOOSE, string>,
+    operation_type: DeepValues<typeof ACCIONES_MONGOOSE, string>,
     metadata: DocumentMetadata,
     next: any
 ) {
@@ -120,18 +128,32 @@ async function generate_history_log<T>(
         } else {
             previous_doc = JSON.parse(
                 JSON.stringify(
-                    operation_type === 'save' ? {} : doc.original_document
+                    operation_type === 'save' ? {} : doc._original_document
                 )
             );
         }
         const new_doc = JSON.parse(JSON.stringify(doc));
         const DELTA = JSONDIFFPATCH_INSTANCE.diff(previous_doc, new_doc);
         const JSON_PATCH = new jsonpatch().format(DELTA);
+        const MOVEMENTS = JSON_PATCH.map((one_movement) => {
+            one_movement.previous_value =
+                seleccionarCampoCualquierNivelProfundo(
+                    previous_doc,
+                    one_movement.path,
+                    '/',
+                    {
+                        noRecorrerArreglos: true,
+                        reemplazoValorIndefinido: '',
+                        valorError: ''
+                    }
+                );
+            return one_movement;
+        });
         const registroHistorial = new HISTORY_LOG_MODEL({
             collection_name: collection_name,
             modified_document_id: doc._id,
             delta: DELTA,
-            movements: JSON_PATCH,
+            movements: MOVEMENTS,
             operation_type,
             description: metadata.description,
             large_description: metadata.large_description,

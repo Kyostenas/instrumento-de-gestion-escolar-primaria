@@ -3,25 +3,19 @@
     (scroll)="scroll_ventana($event)"
     style="max-height: 100vh"
 >
-    @switch (modo_viewport()) {
-        @case ('escritorio') {
-            <div class="d-flex h-100 flex-grow-1">
-                <div>
-                    <app-barra-lateral-menu></app-barra-lateral-menu>
-                </div>
-                <ng-container
-                    [ngTemplateOutlet]="paginaPrincipal"
-                ></ng-container>
-            </div>
-        }
-        @case ('movil') {
-            <ng-container [ngTemplateOutlet]="paginaPrincipal"></ng-container>
-            <div class="d-block d-sm-block sticky-bottom mt-5">
-                <app-barra-lateral-menu></app-barra-lateral-menu>
-            </div>
-        }
-        @default {}
-    }
+    @switch (modo_viewport()) { @case ('escritorio') {
+    <div class="d-flex h-100 flex-grow-1">
+        <div>
+            <app-barra-lateral-menu></app-barra-lateral-menu>
+        </div>
+        <ng-container [ngTemplateOutlet]="paginaPrincipal"></ng-container>
+    </div>
+    } @case ('movil') {
+    <ng-container [ngTemplateOutlet]="paginaPrincipal"></ng-container>
+    <div class="d-block d-sm-block sticky-bottom mt-5">
+        <app-barra-lateral-menu></app-barra-lateral-menu>
+    </div>
+    } @default {} }
 </div>
 
 <ng-template #paginaPrincipal>
@@ -30,49 +24,54 @@
         [ngClass]="{ 'container-fluid tw-gap-[8px]': valid_session() }"
     >
         @if (valid_session()) {
-            <div
-                class="sticky-top rounded-bottom-3 border-bottom border-secondary tw-backdrop-blur tw-h-[40px]"
-            >
-                <div class="!tw-opacity-60 bg-body rounded-bottom-3">
-                    <app-barra-breadcrumbs
-                        barra-breadcrumbs
-                    ></app-barra-breadcrumbs>
-                </div>
+        <div
+            class="sticky-top rounded-bottom-3 border-bottom border-secondary tw-backdrop-blur tw-h-[40px]"
+        >
+            <div class="!tw-opacity-60 bg-body rounded-bottom-3">
+                <app-barra-breadcrumbs
+                    barra-breadcrumbs
+                ></app-barra-breadcrumbs>
             </div>
+        </div>
         }
         <div
             class="d-flex"
             [ngClass]="{
-                'tw-gap-[8px]': !!using_side_panel()
-            }"
+            'tw-gap-[8px]': !!using_side_panel(),
+        }"
         >
             <div class="tw-w-[100%]">
                 <router-outlet></router-outlet>
             </div>
             <div
-                class="tw-w-[900px]"
                 [collapse]="!using_side_panel()"
                 [orientation]="'horizontal'"
-                [ngClass]="{
-                    'tw-opacity-100': !!using_side_panel(),
-                    'tw-opacity-0': !using_side_panel()
-                }"
             >
-                <div class="sticky-top d-flex tw-top-[48px] tw-absolute">
-                    <div
-                        class="tw-w-[8px] border border-4 border-end-0 border-top-0 border-bottom-0 rounded-4 tw-h-[calc(100vh-56px)] p-2 tw-cursor-col-resize tw-transition-all tw-duration-300"
-                    ></div>
-                    <!-- tw-w-[calc(200px)] -->
-                    <div
-                        class="sticky-top tw-top-[48px] tw-h-[calc(100vh-56px)] tw-w-[525px] pt-2 pb-2 vstack tw-transition-all tw-duration-300"
-                    >
-                        <div class="bg-dark-subtle rounded"
-                            >Título importante</div
-                        >
+                <div class="tw-w-[900px]">
+                    <div class="sticky-top d-flex tw-top-[48px] tw-absolute">
                         <div
-                            class="h-100 rounded-3 overflow-y-auto overflow-x-hidden"
+                            class="tw-w-[8px] border border-4 border-end-0 border-top-0 border-bottom-0 rounded-4 tw-h-[calc(100vh-56px)] p-2 tw-cursor-col-resize tw-transition-all tw-duration-300"
+                        ></div>
+                        <!-- tw-w-[calc(200px)] -->
+                        <div
+                            class="sticky-top tw-top-[48px] tw-h-[calc(100vh-56px)] tw-w-[525px] pt-2 pb-2 vstack tw-transition-all tw-duration-300"
                         >
-                            <h1 class="h1">asd</h1>
+                            <div class="bg-dark-subtle rounded p-1">
+                                <ng-container
+                                    [ngTemplateOutlet]="
+                                        sidebar_service.inner_title_template
+                                    "
+                                ></ng-container>
+                            </div>
+                            <div
+                                class="h-100 rounded-3 overflow-y-auto overflow-x-hidden"
+                            >
+                                <ng-container
+                                    [ngTemplateOutlet]="
+                                        sidebar_service.inner_component_template
+                                    "
+                                ></ng-container>
+                            </div>
                         </div>
                     </div>
                 </div>

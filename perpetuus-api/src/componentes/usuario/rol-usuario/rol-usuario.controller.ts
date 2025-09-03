@@ -28,13 +28,15 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
         return this.try_operation({
             res,
             req,
-            body: BODY,
+            extra_body: BODY,
             operation: new RolService().create,
             res_message: 'Rol creado',
             err_message: 'Error al crear rol',
             is_creation: true,
             filename: __filename,
-            fields_to_validate: ['nombre', 'description', 'user_id']
+            fields_to_validate: {
+                extra_body: ['nombre', 'description', 'user_id']
+            }
         });
     };
     read = async (
@@ -45,7 +47,7 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
         return this.try_operation({
             res,
             req,
-            body: BODY,
+            extra_body: BODY,
             operation: new RolService().read,
             res_message: 'Se obtuvieron todos los roles',
             err_message: 'Error al crear rol',
@@ -60,14 +62,14 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
         return this.try_operation({
             res,
             req,
-            body: req.params,
+            extra_body: req.params,
             operation: new RolService().read_by_sequence,
             res_message: 'Rol obtenido usando un consecutivo',
             err_message: 'Error al obtener un rol con su consecutivo',
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence']
+            fields_to_validate: { extra_body: ['sequence'] }
         });
     };
     update = async (
@@ -84,14 +86,16 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
         return this.try_operation({
             res,
             req,
-            body: BODY,
+            extra_body: BODY,
             operation: new RolService().update,
             res_message: 'Rol modificado',
             err_message: 'Error al modificar un rol',
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['nombre', 'description', 'sequence', 'user_id']
+            fields_to_validate: {
+                extra_body: ['nombre', 'description', 'sequence', 'user_id']
+            }
         });
     };
     activate = async (
@@ -108,14 +112,14 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
         return this.try_operation({
             res,
             req,
-            body: BODY,
+            extra_body: BODY,
             operation: new RolService().activate,
             res_message: 'Rol activado',
             err_message: 'Error al activar un rol',
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence', 'user_id']
+            fields_to_validate: { extra_body: ['sequence', 'user_id'] }
         });
     };
     deactivate = async (
@@ -132,14 +136,14 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
         return this.try_operation({
             res,
             req,
-            body: BODY,
+            extra_body: BODY,
             operation: new RolService().deactivate,
             res_message: 'Rol desactivado',
             err_message: 'Error al desactivar un rol',
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['sequence', 'user_id']
+            fields_to_validate: { extra_body: ['sequence', 'user_id'] }
         });
     };
 
@@ -174,14 +178,16 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
         return this.try_operation({
             res,
             req,
-            body: BODY,
+            extra_body: BODY,
             operation: new RolService().crear_permisos_en_rol,
             res_message: 'Permiso/s agregado/s a rol',
             err_message: 'Hubo un error agregando permisos al rol',
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['permissions', 'rol', 'user_id']
+            fields_to_validate: {
+                extra_body: ['permissions', 'rol', 'user_id']
+            }
         });
     };
 
@@ -208,14 +214,16 @@ export class RolController extends CRUD_Controller<typeof ROL_MODEL> {
         return this.try_operation({
             res,
             req,
-            body: BODY,
+            extra_body: BODY,
             operation: new RolService().eliminar_permisos_en_rol,
             res_message: 'Permiso/s eliminado/s del rol',
             err_message: 'Hubo un error eliminando permisos del rol',
             not_found_message: 'No existe un rol con ese consecutivo',
             is_creation: false,
             filename: __filename,
-            fields_to_validate: ['permissions', 'rol', 'user_id']
+            fields_to_validate: {
+                extra_body: ['permissions', 'rol', 'user_id']
+            }
         });
     };
 

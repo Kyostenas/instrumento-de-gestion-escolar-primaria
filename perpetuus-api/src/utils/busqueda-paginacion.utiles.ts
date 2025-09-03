@@ -1,8 +1,12 @@
 import { Request } from 'express';
 
 export function obtener_paginacion(request: Request): Pagination {
-    if (!!request.query['paginacion']) {
-        return JSON.parse(<string>request.query['paginacion']) as Pagination;
+    if (!!request.query['pagination']) {
+        try {
+            return JSON.parse(<string>request.query['pagination']) as Pagination;
+        } catch {
+            return <any>request.query['pagination'] as Pagination
+        }
     } else {
         const PAGINACION: Pagination = {
             sorting_fields: {},

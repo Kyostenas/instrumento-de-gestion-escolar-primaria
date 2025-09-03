@@ -15,7 +15,6 @@ import {
 import { UsuarioRecibir } from 'src/app/models/usuario/usuario.model';
 import { AdministracionUsuariosService } from 'src/app/services/admin/administracion-usuarios/administracion-usuarios.service';
 import { StandardRoutingService } from 'src/app/services/utiles/estructurales/standard-routing/standard-routing.service';
-import { Pagination } from 'src/app/utiles/tipos-personalizados';
 
 @Component({
     selector: 'app-user-administration-list',
@@ -125,7 +124,7 @@ export class UserAdministrationListComponent {
 
     accion_click_fila(datos: OPCIONES_FILA_TABLA_GENERICA<UsuarioRecibir>) {
         if (datos.row_document.sequence !== undefined) {
-            this.routing_service.open_form(datos.row_document.sequence);
+            this.routing_service.open_form(datos.row_document._id);
         }
     }
 

@@ -3,31 +3,30 @@
     class="row g-2"
 >
     @for (campo of campos; track campo; let indice = $index) {
-        <div [class]="class_columna(indice)">
-            <app-formulario-dinamico-campo
-                [campo]="campo"
-                [formulario_contenedor]="formulario"
-                [validar]="validar"
-                (nuevo_cambio)="acciones_de_emision()"
-            ></app-formulario-dinamico-campo>
-        </div>
-    }
-    @if (boton_submit) {
-        <div class="col-12 text-center">
-            <div
-                [collapse]="!formulario_valido || !validar"
-                [orientation]="'vertical'"
+    <div [class]="class_columna(indice)">
+        <app-formulario-dinamico-campo
+            [campo]="campo"
+            [formulario_contenedor]="formulario"
+            [validar]="validar"
+            (nuevo_cambio)="acciones_de_emision()"
+        ></app-formulario-dinamico-campo>
+    </div>
+    } @if (boton_submit) {
+    <div class="col-12 text-center">
+        <div
+            [collapse]="!formulario_valido && validar"
+            [orientation]="'vertical'"
+        >
+            <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="!formulario_valido"
+                (click)="acciones_de_emision_boton()"
             >
-                <button
-                    type="submit"
-                    class="btn btn-primary"
-                    [disabled]="!formulario_valido"
-                    (click)="acciones_de_emision_boton()"
-                >
-                    {{ mensaje_boton_submit }}
-                    <i [class]="icono_boton_submit"></i>
-                </button>
-            </div>
+                {{ mensaje_boton_submit }}
+                <i [class]="icono_boton_submit"></i>
+            </button>
         </div>
+    </div>
     }
 </form>

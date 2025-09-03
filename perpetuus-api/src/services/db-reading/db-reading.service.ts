@@ -5,12 +5,11 @@ import {
 } from '../../utils/busqueda-paginacion.utiles';
 import { Request } from 'express';
 
-export default class DBReadingService<T> {
+export default class DBReadingService<MODEL_TYPE, SCHEMA_TYPE> {
     private pagination: Pagination;
-    private model: ModelType<T>;
+    private model: ModelType<MODEL_TYPE>;
     private term?: string;
-    private filters?: any;
-    private filters_function?: Function;
+    private filters_function?: (current_query: {[type: string]: any}) => {[type: string]: any};
     private projection?: { [type: string]: 1 | 0 | string };
     private paths_to_populate?: PathsToPopulate[];
 
@@ -18,29 +17,26 @@ export default class DBReadingService<T> {
         pagination,
         model,
         term,
-        filters,
         filters_function,
         projection,
         paths_to_populate
     }: {
         pagination: Pagination;
-        model: ModelType<T>;
+        model: ModelType<MODEL_TYPE>;
         term?: string;
-        filters?: any;
-        filters_function?: Function;
+        filters_function?: (current_query: {[type: string]: any}) => {[type: string]: any};
         projection?: { [type: string]: 1 | 0 | string };
         paths_to_populate?: PathsToPopulate[];
     }) {
         this.pagination = pagination;
         this.model = model;
         this.term = term;
-        this.filters = filters;
         this.filters_function = filters_function;
         this.projection = projection;
         this.paths_to_populate = paths_to_populate;
     }
 
-    private generate_text_search_query({
+    private generete_search_query({
         text_search_term,
         regex_term
     }: {
@@ -55,6 +51,9 @@ export default class DBReadingService<T> {
         } else if (!!regex_term) {
             query.text_search_value = { $regex: regex_term, $options: 'i' };
         }
+        if (this.filters_function) {
+            query = this.filters_function(query)
+        }
         return query;
     }
 
@@ -62,12 +61,12 @@ export default class DBReadingService<T> {
         let term_object: { [type: string]: any } = {
             text_search_term: this.term
         };
-        let query = this.generate_text_search_query(term_object);
+        let query = this.generete_search_query(term_object);
         let total = await this.model.countDocuments(query);
         if (total === 0) {
             term_object.regex_term = this.term;
             delete term_object.text_search_term;
-            query = this.generate_text_search_query(term_object);
+            query = this.generete_search_query(term_object);
             total = await this.model.countDocuments(query);
         }
         const IS_TEXT_SEARCH = !!query.$text;

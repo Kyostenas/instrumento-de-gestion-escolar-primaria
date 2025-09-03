@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { FragmentCallbackService } from '../fragment-callback/fragment-callback.service';
 import { ControlQueriesUrlService } from '../control-queries-url/control-queries-url.service';
-import { DeepValues } from 'src/app/utiles/tipos-personalizados';
 
 @Injectable({
     providedIn: 'root'
@@ -51,7 +50,7 @@ export class StandardRoutingService {
         }, 0);
     }
 
-    open_form(object_sequence: number) {
+    open_form(object_id: string) {
         this.query_service.limpiar_todo();
         this.fragment_service.clean_fragment();
         setTimeout(() => {
@@ -60,7 +59,7 @@ export class StandardRoutingService {
             setTimeout(() => {
                 this.query_service.define_multipe(
                     {
-                        form_object_sequence: object_sequence,
+                        object_id: object_id,
                         form_mode: 'detail'
                     },
                     true

@@ -67,18 +67,18 @@ export type DeepValues<T, tipo_valor> = T extends object
 export type DeepKeys<OBJECT> = OBJECT extends any[]
     ? never
     : OBJECT extends object
-      ? {
-            [KEY in keyof OBJECT]: KEY extends string
-                ? OBJECT[KEY] extends (...args: any[]) => any
-                    ? never
-                    : Exclude<OBJECT[KEY], undefined> extends object
-                      ?
-                            | `${KEY}`
-                            | `${KEY}.${DeepKeys<Exclude<OBJECT[KEY], undefined>>}`
-                      : `${KEY}`
-                : never;
-        }[keyof OBJECT]
-      : never;
+    ? {
+          [KEY in keyof OBJECT]: KEY extends string
+              ? OBJECT[KEY] extends (...args: any[]) => any
+                  ? never
+                  : Exclude<OBJECT[KEY], undefined> extends object
+                  ?
+                        | `${KEY}`
+                        | `${KEY}.${DeepKeys<Exclude<OBJECT[KEY], undefined>>}`
+                  : `${KEY}`
+              : never;
+      }[keyof OBJECT]
+    : never;
 
 export type Pagination = {
     limit: number;

@@ -24,7 +24,6 @@ export class CollapsibleElementDirective implements OnInit {
     constructor(
         private elementRef: ElementRef,
         private renderer2: Renderer2,
-        private cdr: ChangeDetectorRef,
         @Inject(PLATFORM_ID) private platform_id: Object
     ) {}
 
@@ -67,7 +66,7 @@ export class CollapsibleElementDirective implements OnInit {
     inner_container!: HTMLElement;
     inner_height!: number;
     inner_width!: number;
-    changes_observer!: MutationObserver;
+    resize_observer!: ResizeObserver;
 
     // (o-----------------------------------------------------------/\-----o)
     //   #endregion VARABLES
@@ -79,7 +78,9 @@ export class CollapsibleElementDirective implements OnInit {
 
     subscribe_to_all_changes() {
         if (isPlatformBrowser(this.platform_id)) {
-            this.changes_observer = new MutationObserver((mutations) => {
+            this.resize_observer = new ResizeObserver((entry) => {
+                this.calculate_actual_size();
+                this.set_min_max_width();
                 if (!this.collapsing) {
                     if (this.orientation === 'horizontal') {
                         this.extend_element_horizontally();
@@ -89,12 +90,7 @@ export class CollapsibleElementDirective implements OnInit {
                 }
             });
 
-            this.changes_observer.observe(this.collapsible_element, {
-                childList: true,
-                characterData: true,
-                attributes: true,
-                subtree: true
-            });
+            this.resize_observer.observe(this.inner_container);
         }
     }
 
@@ -136,7 +132,6 @@ export class CollapsibleElementDirective implements OnInit {
                 switch (this.orientation) {
                     case 'horizontal':
                         this.collapse_element_horizontally();
-                        // this.collapse_element_vertically();
                         break;
                     case 'vertical':
                         this.collapse_element_vertically();
@@ -149,7 +144,6 @@ export class CollapsibleElementDirective implements OnInit {
                 switch (this.orientation) {
                     case 'horizontal':
                         this.extend_element_horizontally();
-                        // this.extend_element_vertically();
                         break;
                     case 'vertical':
                         this.extend_element_vertically();
@@ -165,7 +159,7 @@ export class CollapsibleElementDirective implements OnInit {
         this.calculate_actual_size();
         this.set_min_max_width();
         this.renderer2.setStyle(this.collapsible_element, 'height', '0px');
-        this.renderer2.setStyle(this.inner_container, 'opacity', '-30%');
+        this.renderer2.setStyle(this.inner_container, 'opacity', '0%');
     }
 
     extend_element_vertically() {
@@ -271,7 +265,6 @@ export class CollapsibleElementDirective implements OnInit {
     }
 
     emit_starting_to_show() {
-        console.log('SHOW');
         this.starting_to_show.emit();
     }
 
