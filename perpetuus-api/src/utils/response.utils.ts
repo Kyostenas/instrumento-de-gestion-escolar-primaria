@@ -43,13 +43,16 @@ export class Resp {
     }
 
     private formatear_mensaje(mensaje: string) {
+        const INICIO = (this.res.start_timestamp ?? new Date()).getTime();
+        const FIN = new Date().getTime();
         return (
             `------------------------------------------------------------------\n` +
-            `<RESPUESTA >----\n` +
+            `<RESPUESTA >\n` +
             `[USUARIO   ] ${this.res.usuario?.nombre}\n` +
-            `[URL       ] ${this.res.req.originalUrl}\n` +
+            `[URL       ] (${this.res.req.method}) ${this.res.req.originalUrl}\n` +
             `[USER_AGENT] ${this.res.req.get('User-Agent')}\n` +
-            `[STATUS    ] ${this.codigo_actual}\n` +
+            `[DURACION  ] ${FIN - INICIO}ms\n` +
+            `[ESTATUS   ] ${this.codigo_actual}\n` +
             `[MENSAJE   ] ${mensaje}\n` +
             `------------------------------------------------------------------`
         );
@@ -72,15 +75,19 @@ export class Resp {
                 this.datos.mensaje ? this.datos.mensaje : ''
             );
         }
-        syslog.definir_ubicacion(this.filename);
-        syslog.error(this.formatear_mensaje(this.datos.error));
+        this.res.req.on('end', () => {
+            syslog.definir_ubicacion(this.filename);
+            syslog.error(this.formatear_mensaje(this.datos.error));
+        });
         return this.datos;
     }
 
     private estatus_ok_general() {
         this.datos.ok = true;
-        syslog.definir_ubicacion(this.filename);
-        syslog.success(this.formatear_mensaje(this.datos.mensaje));
+        this.res.req.on('end', () => {
+            syslog.definir_ubicacion(this.filename);
+            syslog.success(this.formatear_mensaje(this.datos.mensaje));
+        });
         return this.datos;
     }
 
@@ -92,8 +99,10 @@ export class Resp {
         this.datos.estatus = estatus;
         this.codigo_actual = `${estatus} ${mensaje}`;
         if (!this.datos) {
-            syslog.definir_ubicacion(this.filename);
-            syslog.error(`Respuesta vacía: `);
+            this.res.req.on('end', () => {
+                syslog.definir_ubicacion(this.filename);
+                syslog.error(`Respuesta vacía: `);
+            });
             return this.res.status(estatus).json(this.datos);
         }
         if (error) {

@@ -3,7 +3,7 @@
 // (o-----------------------------------------------------------\/-----o)
 
 /* IMPORTACIONES EXTERNAS */
-import { Schema } from 'mongoose';
+import mongoose, { Mongoose, Schema } from 'mongoose';
 import {
     getModelForClass,
     Index,
@@ -19,6 +19,7 @@ import { ACCIONES_MONGOOSE } from '../../utils/constantes.utils';
 
 /* OTROS MODELOS */
 import { User } from '../../componentes/usuario/usuario/usuario.model';
+import text_search_index from '../../plugins/text-search-index/text-search-index.plugin';
 
 // (o-----------------------------------------------------------/\-----o)
 //   #endregion IMPORTACIONES (FIN)
@@ -29,6 +30,9 @@ import { User } from '../../componentes/usuario/usuario/usuario.model';
 // (o-----------------------------------------------------------\/-----o)
 
 @plugin(auto_increment<typeof HISTORY_LOG_MODEL>, { field: 'sequence' })
+@plugin(text_search_index<typeof HISTORY_LOG_MODEL>, {
+    fields: ['sequence', 'description', 'large_description']
+})
 @Index({ user: 1 }, { name: 'user' })
 @Index({ collection_name: 1 }, { name: 'collection_name' })
 @Index({ modified_document_id: 1 }, { name: 'modified_document_id' })
@@ -71,7 +75,7 @@ class HistoryLog implements GenericDocument {
     @prop({
         required: [true, 'El id del documento modificado es obligatorio']
     })
-    public modified_document_id!: string;
+    public modified_document_id!: mongoose.Types.ObjectId;
 
     @prop({
         enum: {
@@ -82,7 +86,7 @@ class HistoryLog implements GenericDocument {
     })
     public operation_type!: string;
 
-    @prop({ _id: false, default: [] })
+    @prop({ _id: false, default: [], type: () => [Movement] })
     public movements: Movement[] = [];
 
     @prop({

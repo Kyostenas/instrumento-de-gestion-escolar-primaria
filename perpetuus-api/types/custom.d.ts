@@ -179,8 +179,11 @@ declare global {
 
     export type DocumentMetadata = {
         user_id?: string | Types.ObjectId;
-        description: string;
+        description?: string;
         large_description?: string;
+        no_history_log?: boolean;
+        no_text_search_generation?: boolean;
+        extra?: any;
     };
 
     export type PathsToPopulate = {
@@ -232,6 +235,7 @@ declare module 'express' {
              */
             permisos?: string[];
         };
+        start_timestamp?: Date;
     }
     export interface Request {
         usuario?: {
@@ -257,24 +261,22 @@ declare module 'express' {
          * aqui.
          */
         permiso_denegado?: string;
+        /**
+         * Indica el momento en el que comenzo la peticion
+         */
     }
 }
 
 declare module 'mongoose' {
     export interface Document {
-        metadata?: {
-            user_id?: string | Types.ObjectId;
-            description: string;
-            large_description?: string;
-        };
+        metadata?: DocumentMetadata;
         _original_document?: Document;
     }
+    export interface UpdateOptions {
+        metadata?: DocumentMetadata;
+    }
     export interface QueryOptions {
-        metadata?: {
-            user_id?: string | Types.ObjectId;
-            description: string;
-            large_description?: string;
-        };
+        metadata?: DocumentMetadata;
     }
 
     export interface Query {

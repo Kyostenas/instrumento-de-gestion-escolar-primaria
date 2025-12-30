@@ -1,4 +1,10 @@
-import mongoose, { CallbackError, Schema } from 'mongoose';
+import mongoose, {
+    CallbackError,
+    MongooseUpdateQueryOptions,
+    QueryOptions,
+    Schema,
+    UpdateOptions
+} from 'mongoose';
 import { ACCIONES_MONGOOSE } from '../../utils/constantes.utils';
 import { Model } from 'mongoose';
 import { seleccionarCampoCualquierNivelProfundo } from '../../utils/general.utils';
@@ -16,7 +22,12 @@ function text_search_index<T>(schema: Schema, options: TextSearchIndexOptions) {
             const POPULATED = await MODEL.findOne({ _id: doc._id })
                 .populate(options.paths_to_populate ?? [])
                 .lean();
-            await create_text_search_field(POPULATED, options.fields, MODEL);
+            await create_text_search_field(
+                POPULATED,
+                options.fields,
+                MODEL,
+                this.metadata
+            );
             try {
                 next();
             } catch {}
@@ -34,7 +45,34 @@ function text_search_index<T>(schema: Schema, options: TextSearchIndexOptions) {
                 .findOne(query)
                 .populate(options.paths_to_populate ?? [])
                 .lean();
-            await create_text_search_field(doc, options.fields, this.model);
+            await create_text_search_field(
+                doc,
+                options.fields,
+                this.model,
+                this.getOptions().metadata
+            );
+            try {
+                next();
+            } catch {}
+        }
+    );
+    schema.post(
+        ACCIONES_MONGOOSE.UPDATE_ONE,
+        async function (
+            this: mongoose.Query<any, T>,
+            next: (err?: CallbackError) => void
+        ) {
+            const query = this.getQuery();
+            const doc = await this.model
+                .findOne(query)
+                .populate(options.paths_to_populate ?? [])
+                .lean();
+            await create_text_search_field(
+                doc,
+                options.fields,
+                this.model,
+                this.getOptions().metadata
+            );
             try {
                 next();
             } catch {}
@@ -62,10 +100,14 @@ export async function create_text_search_field(
     documento: any,
     campos: string[],
     modelo: Model<any>,
+    metadata?: DocumentMetadata,
     opciones: {
         usarComoFuncion?: boolean;
     } = {}
 ) {
+    if (metadata?.no_text_search_generation) {
+        return;
+    }
     if (opciones?.usarComoFuncion === undefined) {
         opciones.usarComoFuncion = false;
     }
@@ -119,7 +161,13 @@ export async function create_text_search_field(
             } else {
                 await modelo.updateOne(
                     { _id: documento._id },
-                    { text_search_value: busqueda }
+                    { text_search_value: busqueda },
+                    {
+                        metadata: {
+                            no_history_log: true,
+                            no_text_search_generation: true
+                        }
+                    } as UpdateOptions & MongooseUpdateQueryOptions
                 );
             }
         }

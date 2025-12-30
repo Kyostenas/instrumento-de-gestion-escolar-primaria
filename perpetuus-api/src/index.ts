@@ -57,17 +57,21 @@ app.use((req: Request, res: Response, next: any) => {
         formed_body = body.join('\n');
     }
 
-    syslog._Request(
-        req.method,
-        `------------------------------------------------------------------\n` +
-            `[USUARIO   ] ${req.usuario?.nombre || req.body?.nombre_usuario}\n` +
-            `[URL       ] ${req.originalUrl}\n` +
-            `[USER_AGENT] ${req.get('User-Agent')}\n` +
-            `[BODY      ] ${formed_body}\n` +
-            `[QUERY     ] ${JSON.stringify(req.query, undefined, 2)}\n` +
-            `[PARAMS    ] ${JSON.stringify(req.params, undefined, 2)}\n` +
-            `------------------------------------------------------------------`
-    );
+    res.start_timestamp = new Date();
+
+    req.on('end', () => {
+        syslog._Request(
+            req.method,
+            `------------------------------------------------------------------\n` +
+                `[USUARIO   ] ${req.usuario?.nombre || req.body?.nombre_usuario}\n` +
+                `[URL       ] ${req.originalUrl}\n` +
+                `[USER_AGENT] ${req.get('User-Agent')}\n` +
+                `[BODY      ] ${formed_body}\n` +
+                `[QUERY     ] ${JSON.stringify(req.query, undefined, 2)}\n` +
+                `[PARAMS    ] ${JSON.stringify(req.params, undefined, 2)}\n` +
+                `------------------------------------------------------------------`
+        );
+    });
     next();
 });
 

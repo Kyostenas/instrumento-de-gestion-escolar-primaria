@@ -7,18 +7,15 @@ import { syslog as _syslog } from '../../utils/logs.utils';
 const syslog = _syslog(module);
 import jsonpatch from 'jsondiffpatch/formatters/jsonpatch';
 import * as jsondiffpatch from 'jsondiffpatch';
-import {
-    ReplaceOp,
-    Op,
-    MoveOp,
-    AddOp,
-    RemoveOp
-} from 'jsondiffpatch/formatters/jsonpatch';
 import { seleccionarCampoCualquierNivelProfundo } from '../../utils/general.utils';
+
 const JSONDIFFPATCH_INSTANCE = jsondiffpatch.create({
     arrays: {
         detectMove: true,
         includeValueOnMove: true
+    },
+    objectHash: function (item: any, index) {
+        return item._id || '$$index' + index;
     }
 });
 
@@ -68,13 +65,7 @@ function hystory_log_plugin<T>(schema: Schema<T>) {
             this: mongoose.Query<any, any>,
             next: (err?: CallbackError) => void
         ) {
-            const ORIGINAL_DOC = await this.model
-                .findOne(this.getFilter())
-                .lean();
-            this._original_document = ORIGINAL_DOC;
-            try {
-                next();
-            } catch {}
+            pre_operation(this, next);
         }
     );
 
@@ -85,22 +76,66 @@ function hystory_log_plugin<T>(schema: Schema<T>) {
             this: mongoose.Query<any, any>,
             next: (err?: CallbackError) => void
         ) {
-            const metadata = this.getOptions().metadata ?? { description: '' };
-            const query = this.getQuery();
-            const doc = await this.model.findOne(query);
-            generate_history_log(
-                doc,
-                this,
-                schema,
-                ACCIONES_MONGOOSE.FIND_ONE_AND_UPDATE,
-                metadata,
-                next
-            );
-            try {
-                next();
-            } catch {}
+            post_operation(this, next);
         }
     );
+
+    /* Store the state of the document before it's modified */
+    schema.pre(
+        ACCIONES_MONGOOSE.UPDATE_ONE,
+        async function (
+            this: mongoose.Query<any, any>,
+            next: (err?: CallbackError) => void
+        ) {
+            pre_operation(this, next);
+        }
+    );
+
+    /* Trigger history log */
+    schema.post(
+        ACCIONES_MONGOOSE.UPDATE_ONE,
+        async function (
+            this: mongoose.Query<any, any>,
+            next: (err?: CallbackError) => void
+        ) {
+            post_operation(this, next);
+        }
+    );
+
+    async function pre_operation(
+        query_object: mongoose.Query<any, any>,
+        next: (err?: CallbackError) => void
+    ) {
+        const ORIGINAL_DOC = await query_object.model
+            .findOne(query_object.getFilter())
+            .lean();
+        query_object._original_document = ORIGINAL_DOC;
+        try {
+            next();
+        } catch {}
+    }
+
+    async function post_operation(
+        query_object: mongoose.Query<any, any>,
+        next: (err?: CallbackError) => void
+    ) {
+        const metadata = query_object.getOptions().metadata ?? {
+            description: ''
+        };
+        const search_query = query_object.getQuery();
+        const doc = await query_object.model.findOne(search_query);
+        generate_history_log(
+            doc,
+            query_object,
+            schema,
+            ACCIONES_MONGOOSE.FIND_ONE_AND_UPDATE,
+            metadata,
+            next
+        );
+        try {
+            next();
+        } catch {}
+    }
 }
 
 // (o-----------------------------------------------------------/\-----o)
@@ -119,6 +154,9 @@ async function generate_history_log<T>(
     metadata: DocumentMetadata,
     next: any
 ) {
+    if (metadata.no_history_log) {
+        return;
+    }
     try {
         const doc = document;
         const collection_name = document.collection.name;
@@ -151,15 +189,16 @@ async function generate_history_log<T>(
         });
         const registroHistorial = new HISTORY_LOG_MODEL({
             collection_name: collection_name,
-            modified_document_id: doc._id,
+            modified_document_id: new mongoose.Types.ObjectId(String(doc._id)),
             delta: DELTA,
             movements: MOVEMENTS,
             operation_type,
             description: metadata.description,
             large_description: metadata.large_description,
-            user: new Schema.Types.ObjectId(metadata.user_id)
+            user: metadata.user_id
+                ? new Schema.Types.ObjectId(metadata.user_id)
+                : undefined
         });
-        await registroHistorial.save();
         try {
             next();
         } catch {}
